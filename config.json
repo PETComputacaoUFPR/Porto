@@ -16,8 +16,8 @@
             "password": "abc1234"
         },
         "client": {
-            "name": "Test",
-            "clientId": "test-web",
+            "name": "Cronos WEB 1.0",
+            "clientId": "cronos-web",
             "clientSecret": "KeepItSecret"
         }
     }
