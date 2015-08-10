@@ -22,18 +22,19 @@ var tests = require('./routes/tests')
 var app = express()
 
 app.use(cors())
-app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 app.use(cookieParser())
 app.use(methodOverride())
 app.use(passport.initialize())
 
+app.use('*', cors())
 app.use('/', api)
 app.use('/v1/u', users)
 app.use('/v1/materias', materias)
 app.use('/v1/professores', teachers)
 app.use('/v1/arquivos', tests)
-app.use('/oauth/token', oauth2.token)
+app.use('/v1/oauth/token', oauth2.token)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next){
