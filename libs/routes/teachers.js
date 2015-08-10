@@ -1,17 +1,14 @@
 var express = require('express')
-var router = express.Router()
 var passport = require('passport')
+var router = express.Router()
 
 var libs = process.cwd() + '/libs/'
 
 var db = require(libs + 'db/mongoose')
-var Project = require(libs + 'model/project')
+var Teacher = require(libs + 'model/teacher')
 
 router.get('/', function(req, res) {
-    Project.find()
-        .populate('members')
-        .populate('tasks')
-        .populate('leader')
+    Teacher.find()
         .exec(function(err, members) {
             if(!err) {
                 return res.json(members)
@@ -24,17 +21,14 @@ router.get('/', function(req, res) {
 })
 
 router.get('/:id', function(req, res) {
-    Project.findById(req.params.id)
-        .populate('members')
-        .populate('tasks')
-        .populate('leader')
-        .exec(function(err, project) {
-            if(!project) {
+    Teacher.findById(req.params.id)
+        .exec(function(err, teacher) {
+            if(!teacher) {
                 res.statusCode = 404
                 return res.json({error: 'Not found'})
             }
             if(!err) {
-                return res.json({status: 'OK', project:project})
+                return res.json({status: 'OK', teacher:teacher})
             } else {
                 res.statusCode = 500
                 console.log('Internal error(%d): %s', res.statusCode, err.message)
@@ -44,17 +38,13 @@ router.get('/:id', function(req, res) {
 })
 
 router.post('/', passport.authenticate('bearer', { session: false }), function(req, res) {
-    var project = new Project({
-        name: req.body.name,
-        members: req.body.members,
-        tasks: req.body.tasks,
-        color: req.body.color,
-        leader: req.body.leader
+    var teacher = new Teacher({
+        name: req.body.name
     })
 
-    project.save(function (err) {
+    teacher.save(function (err) {
         if(!err) {
-            return res.json({status: 'OK', project:project})
+            return res.json({status: 'OK', teacher:teacher})
         } else {
             if(err.name === 'ValidationError') {
                 res.statusCode = 400
@@ -71,21 +61,17 @@ router.post('/', passport.authenticate('bearer', { session: false }), function(r
 router.put('/:id', passport.authenticate('bearer', { session: false }), function(req, res) {
     var memberId = req.params.id
 
-    Project.findById(memberId, function(err, project) {
-        if(!project) {
+    Teacher.findById(memberId, function(err, teacher) {
+        if(!teacher) {
             res.statusCode = 404
             return res.json({error: 'Not found'})
         }
 
-        project.name = req.body.name
-        project.members = req.body.members
-        project.tasks = req.body.tasks
-        project.color = req.body.color
-        project.leader = req.body.leader
+        teacher.name = req.body.name
 
-        project.save(function(err) {
+        teacher.save(function(err) {
             if(!err) {
-                return res.json({status: 'OK', project:project})
+                return res.json({status: 'OK', teacher:teacher})
             } else {
                 if(err.name === 'ValidationError') {
                     res.statusCode = 400

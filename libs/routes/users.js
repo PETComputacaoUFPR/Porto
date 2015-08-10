@@ -9,7 +9,6 @@ var User = require(libs + 'model/user')
 
 router.get('/', function(req, res) {
     User.find()
-        .populate('projects')
         .exec(function(err, members) {
             if(!err) {
                 return res.json(members)
@@ -23,7 +22,6 @@ router.get('/', function(req, res) {
 
 router.get('/:id', function(req, res) {
     User.findById(req.params.id)
-        .populate('projects')
         .exec(function(err, user) {
             if(!user) {
                 res.statusCode = 404
@@ -42,8 +40,10 @@ router.get('/:id', function(req, res) {
 router.post('/', passport.authenticate('bearer', { session: false }), function(req, res) {
     var user = new User({
         name: req.body.name,
-        login: req.body.login,
-        password: req.body.password
+        username: req.body.username,
+        password: req.body.password,
+        admin: req.body.admin,
+        moderator: req.body.moderator
     })
 
     user.save(function (err) {
@@ -72,8 +72,10 @@ router.put('/:id', passport.authenticate('bearer', { session: false }), function
         }
 
         user.name = req.body.name
-        user.login = req.body.login
+        user.username = req.body.username
         user.password = req.body.password
+        user.admin = req.body.admin
+        user.moderator = req.body.moderator
 
         user.save(function(err) {
             if(!err) {

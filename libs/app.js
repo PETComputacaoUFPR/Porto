@@ -15,9 +15,9 @@ var oauth2 = require('./auth/oauth2')
 
 var api = require('./routes/api')
 var users = require('./routes/users')
-var projects = require('./routes/projects')
-var tasks = require('./routes/tasks')
-var works = require('./routes/works')
+var materias = require('./routes/materias')
+var teachers = require('./routes/teachers')
+var tests = require('./routes/tests')
 
 var app = express()
 
@@ -29,10 +29,10 @@ app.use(methodOverride())
 app.use(passport.initialize())
 
 app.use('/', api)
-app.use('/users', users)
-app.use('/projects', projects)
-app.use('/tasks', tasks)
-app.use('/works', works)
+app.use('/v1/u', users)
+app.use('/v1/materias', materias)
+app.use('/v1/professores', teachers)
+app.use('/v1/arquivos', tests)
 app.use('/oauth/token', oauth2.token)
 
 // catch 404 and forward to error handler

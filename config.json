@@ -4,7 +4,7 @@
         "tokenLife" : 3600
     },
     "mongoose": {
-        "uri": "mongodb://localhost/cronos"
+        "uri": "mongodb://localhost/porto"
     },
     "default": {
         "api": {
@@ -13,11 +13,11 @@
         "user": {
             "name": "Root",
             "username": "root",
-            "password": "abc1234"
+            "password": "root"
         },
         "client": {
-            "name": "Cronos WEB 1.0",
-            "clientId": "cronos-web",
+            "name": "Farol - Repositório de Provas",
+            "clientId": "farol-web",
             "clientSecret": "KeepItSecret"
         }
     }

@@ -1,8 +1,8 @@
 {
-  "name": "CronosAPI",
+  "name": "Porto",
   "version": "1.0.0",
   "author": "Vytor Calixto <vytorcalixto@gmail.com> (https://github.com/VytorCalixto)",
-  "description": "API RESTful para o Cronos",
+  "description": "API RESTful para o Farol",
   "private": true,
   "scripts": {
     "start": "nodemon server.js || node server.js",

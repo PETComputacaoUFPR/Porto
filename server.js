@@ -1,4 +1,4 @@
-var debug = require('debug')('cronosapi')
+var debug = require('debug')('porto')
 
 var libs = process.cwd() + '/libs/'
 var config = require(libs + 'config')
