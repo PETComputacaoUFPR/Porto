@@ -12,53 +12,49 @@ var Test = new Schema({
     // Test or assignment
     type: {
         type: String,
-        required: true,
-		default: 'test'
+        default: 'prova'
     },
     // First, second, third or final
     number: {
+        type: String
+    },
+    substituive: {
+        type: Boolean,
+        default: false
+    },
+    year: {
+        type: Number
+    },
+    semester: {
+        type: Number
+    },
+    // Path to file
+    file: {
         type: String,
         required: true
     },
-	substituive: {
-		type: Boolean,
-		default: false,
-		required: true
-	},
-	year: {
-		type: Number
-	},
-	semester: {
-		type: Number
-	},
-	// Path to file
-	file: {
-		type: String,
-		required: true
-	},
-	// Approved or pendent
-	status: {
-		type: String,
-		required: true,
-		default: 'pendent'
-	},
-	// PDF or image?
-	fileType: {
-		type: String
-	},
-	materia: {
-		type: Schema.Types.ObjectId,
-		ref: 'Materia'
-	},
-	teacher: {
-		type: Schema.Types.ObjectId,
-		ref: 'Teacher'
-	},
-	// Who uploaded
-	user: {
-		type: Schema.Types.ObjectId,
-		ref: 'User'
-	}
+    // Approved or pendent
+    status: {
+        type: String,
+        default: 'pendente'
+    },
+    // PDF or image?
+    fileType: {
+        type: String
+    },
+    materia: {
+        type: Schema.Types.ObjectId,
+        ref: 'Materia'
+    },
+    teacher: {
+        type: Schema.Types.ObjectId,
+        ref: 'Teacher'
+    },
+    // Who uploaded
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }
 })
 
 module.exports = mongoose.model('Test', Test)
