@@ -1,6 +1,8 @@
 var express = require('express')
 var passport = require('passport')
 var router = express.Router()
+var multer = require('multer')
+var upload = multer({dest: 'uploads/'})
 
 var libs = process.cwd() + '/libs/'
 
@@ -59,7 +61,7 @@ router.get('/status/:status', function(req, res) {
         })
 })
 
-router.post('/', passport.authenticate('bearer', { session: false }), function(req, res) {
+router.post('/', upload.array('files', 10), function(req, res) {
     console.log(req.files)
     var test = new Test({
         name: req.body.name,
