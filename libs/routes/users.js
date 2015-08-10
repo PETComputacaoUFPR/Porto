@@ -7,17 +7,29 @@ var libs = process.cwd() + '/libs/'
 var db = require(libs + 'db/mongoose')
 var User = require(libs + 'model/user')
 
-router.get('/', function(req, res) {
+router.get('/', passport.authenticate('bearer', { session: false }), function(req, res) {
     User.find()
-        .exec(function(err, members) {
+        .exec(function(err, users) {
             if(!err) {
-                return res.json(members)
+                return res.json(users)
             } else {
                 res.statusCode = 500
                 console.log('Internal error(%d): %s', res.statusCode, err.message)
                 return res.json({error: 'Server Error'})
             }
         })
+})
+
+router.get('/me', passport.authenticate('bearer', { session: false }), function(req, res) {
+    console.log(req.user)
+    res.json({
+        user_id: req.user.userId,
+        name: req.user.name,
+        username: req.user.username,
+        admin: req.user.admin,
+        moderator: req.user.moderator,
+        scope: req.authInfo.scope
+    })
 })
 
 router.get('/:id', function(req, res) {
