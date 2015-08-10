@@ -17,7 +17,7 @@
         },
         "client": {
             "name": "Farol - Repositório de Provas",
-            "clientId": "farol-web",
+            "clientId": "farol",
             "clientSecret": "KeepItSecret"
         }
     }
