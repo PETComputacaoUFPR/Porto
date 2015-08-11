@@ -11,6 +11,12 @@ router.get('/', passport.authenticate('bearer', { session: false }), function(re
     User.find()
         .exec(function(err, users) {
             if(!err) {
+                for (var i=0; i < users.length; i++) {
+                    u = users[i].toObject()
+                    delete u.hashedPassword
+                    delete u.salt
+                    users[i] = u
+                }
                 return res.json(users)
             } else {
                 res.statusCode = 500
@@ -40,6 +46,9 @@ router.get('/:id', function(req, res) {
                 return res.json({error: 'Not found'})
             }
             if(!err) {
+                user = user.toObject()
+                delete user.hashedPassword
+                delete user.salt
                 return res.json({status: 'OK', user:user})
             } else {
                 res.statusCode = 500
