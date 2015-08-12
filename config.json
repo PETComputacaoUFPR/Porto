@@ -10,8 +10,8 @@
         "api": {
             "version" : "v1"
         },
-        "user": {
-            "name": "PET Computação",
+        "usuario": {
+            "nome": "PET Computação",
             "username": "root",
             "password": "root",
             "email": "pet@inf.ufpr.br"

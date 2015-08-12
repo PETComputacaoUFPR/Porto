@@ -7,13 +7,13 @@ var upload = multer({dest: 'uploads/'})
 var libs = process.cwd() + '/libs/'
 
 var db = require(libs + 'db/mongoose')
-var Test = require(libs + 'model/test')
+var Arquivo = require(libs + 'model/arquivo')
 
 router.get('/', function(req, res) {
-    Test.find()
+    Arquivo.find()
         .populate('materia')
-        .populate('teacher')
-        .populate('user')
+        .populate('professor')
+        .populate('usuario')
         .exec(function(err, members) {
             if(!err) {
                 return res.json(members)
@@ -26,17 +26,17 @@ router.get('/', function(req, res) {
 })
 
 router.get('/:id', function(req, res) {
-    Test.findById(req.params.id)
+    Arquivo.findById(req.params.id)
         .populate('materia')
-        .populate('teacher')
-        .populate('user')
-        .exec(function(err, test) {
-            if(!test) {
+        .populate('professor')
+        .populate('usuario')
+        .exec(function(err, arquivo) {
+            if(!arquivo) {
                 res.statusCode = 404
                 return res.json({error: 'Not found'})
             }
             if(!err) {
-                return res.json({status: 'OK', test:test})
+                return res.json({status: 'OK', arquivo:arquivo})
             } else {
                 res.statusCode = 500
                 console.log('Internal error(%d): %s', res.statusCode, err.message)
@@ -46,10 +46,10 @@ router.get('/:id', function(req, res) {
 })
 
 router.get('/status/:status', function(req, res) {
-    Test.find({status: req.params.status})
+    Arquivo.find({status: req.params.status})
         .populate('materia')
-        .populate('teacher')
-        .populate('user')
+        .populate('professor')
+        .populate('usuario')
         .exec(function(err, tests) {
             if(!err) {
                 return res.json(tests)
@@ -64,22 +64,22 @@ router.get('/status/:status', function(req, res) {
 router.post('/', upload.array('files', 1), passport.authenticate('bearer', { session: false }), function(req, res) {
     for(var f in req.files) {
         file = req.files[f]
-        var test = new Test({
-            name: file.originalname,
-            type: req.body.type,
-            number: req.body.number || 0,
-            substituive: req.body.substituive || false,
-            year: req.body.year,
-            semester: req.body.semester,
-            file: file.path,
+        var arquivo = new Arquivo({
+            nome: file.originalname,
+            tipo: req.body.tipo,
+            numero: req.body.numero || 0,
+            substitutiva: req.body.substitutiva || false,
+            ano: req.body.ano,
+            semestre: req.body.semestre,
+            arquivo: file.path,
             status: req.body.status || 'pendente',
-            fileType: file.mimetype,
-            user: req.user.userId
+            tipoArquivo: file.mimetype,
+            usuario: req.user.userId
         })
 
-        test.save(function (err) {
+        arquivo.save(function (err) {
             if(!err) {
-                return res.json({status: 'OK', file:test})
+                return res.json({status: 'OK', file:arquivo})
             } else {
                 if(err.name === 'ValidationError') {
                     res.statusCode = 400
@@ -88,6 +88,7 @@ router.post('/', upload.array('files', 1), passport.authenticate('bearer', { ses
                     res.statusCode = 500
                     res.json({error:'Server error'})
                 }
+                console.log(err)
                 console.log('Internal error(%d): %s', res.statusCode, err.message)
             }
         })
@@ -97,27 +98,23 @@ router.post('/', upload.array('files', 1), passport.authenticate('bearer', { ses
 router.put('/:id', passport.authenticate('bearer', { session: false }), function(req, res) {
     var memberId = req.params.id
 
-    Test.findById(memberId, function(err, test) {
-        if(!test) {
+    Arquivo.findById(memberId, function(err, arquivo) {
+        if(!arquivo) {
             res.statusCode = 404
             return res.json({error: 'Not found'})
         }
 
-        test.name = req.body.name
-        test.type = req.body.type
-        test.number = req.body.number
-        test.substituive = req.body.substituive
-        test.year = req.body.year
-        test.semester = req.body.semester
-        test.file = req.body.file
-        test.fileType = req.body.fileType
-        test.materia = req.body.materia
-        test.teacher = req.body.teacher
-        test.user = req.body.user
+        arquivo.numero = req.body.numero
+        arquivo.substitutiva = req.body.substitutiva
+        arquivo.ano = req.body.ano
+        arquivo.semestre = req.body.semestre
+        arquivo.tipoArquivo = req.body.tipoArquivo
+        arquivo.materia = req.body.materia
+        arquivo.professor = req.body.professor
 
-        test.save(function(err) {
+        arquivo.save(function(err) {
             if(!err) {
-                return res.json({status: 'OK', test:test})
+                return res.json({status: 'OK', arquivo:arquivo})
             } else {
                 if(err.name === 'ValidationError') {
                     res.statusCode = 400
@@ -135,17 +132,17 @@ router.put('/:id', passport.authenticate('bearer', { session: false }), function
 router.put('/status/:id', passport.authenticate('bearer', { session: false }), function(req, res) {
     var memberId = req.params.id
 
-    Test.findById(memberId, function(err, test) {
-        if(!test) {
+    Arquivo.findById(memberId, function(err, arquivo) {
+        if(!arquivo) {
             res.statusCode = 404
             return res.json({error: 'Not found'})
         }
 
-        test.status = req.body.status
+        arquivo.status = req.body.status
 
-        test.save(function(err) {
+        arquivo.save(function(err) {
             if(!err) {
-                return res.json({status: 'OK', test:test})
+                return res.json({status: 'OK', arquivo:arquivo})
             } else {
                 if(err.name === 'ValidationError') {
                     res.statusCode = 400

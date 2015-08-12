@@ -6,7 +6,7 @@ var libs = process.cwd() + '/libs/'
 
 var config = require(libs + 'config')
 
-var User = require(libs + 'model/user')
+var Usuario = require(libs + 'model/usuario')
 var Client = require(libs + 'model/client')
 var AccessToken = require(libs + 'model/accessToken')
 var RefreshToken = require(libs + 'model/refreshToken')
@@ -15,15 +15,15 @@ passport.use(new ClientPasswordStrategy(
     function(clientId, clientSecret, done) {
         Client.findOne({ clientId: clientId }, function(err, client) {
             if (err) {
-            	return done(err)
+                return done(err)
             }
 
             if (!client) {
-            	return done(null, false)
+                return done(null, false)
             }
 
             if (client.clientSecret !== clientSecret) {
-            	return done(null, false)
+                return done(null, false)
             }
 
             return done(null, client)
@@ -36,36 +36,36 @@ passport.use(new BearerStrategy(
         AccessToken.findOne({ token: accessToken }, function(err, token) {
 
             if (err) {
-            	return done(err)
+                return done(err)
             }
 
             if (!token) {
-            	return done(null, false)
+                return done(null, false)
             }
 
             if( Math.round((Date.now()-token.created)/1000) > config.get('security:tokenLife') ) {
 
                 AccessToken.remove({ token: accessToken }, function (err) {
                     if (err) {
-                    	return done(err)
+                        return done(err)
                     }
                 })
 
                 return done(null, false, { message: 'Token expired' })
             }
 
-            User.findById(token.userId, function(err, user) {
+            Usuario.findById(token.userId, function(err, usuario) {
 
                 if (err) {
-                	return done(err)
+                    return done(err)
                 }
 
-                if (!user) {
-                	return done(null, false, { message: 'Unknown user' })
+                if (!usuario) {
+                    return done(null, false, { message: 'Unknown usuario' })
                 }
 
                 var info = { scope: '*' }
-                done(null, user, info)
+                done(null, usuario, info)
             })
         })
     }

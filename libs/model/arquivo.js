@@ -1,60 +1,60 @@
 var mongoose = require('mongoose')
 var Schema = mongoose.Schema
 var Materia = require('./materia')
-var Teacher = require('./teacher')
-var User = require('./user')
+var Professor = require('./professor')
+var Usuario = require('./usuario')
 
-var Test = new Schema({
-    name: {
+var Arquivo = new Schema({
+    nome: {
         type: String,
         required: true
     },
-    // Test or assignment
-    type: {
+    // Prova ou trabalho
+    tipo: {
         type: String,
         default: 'prova'
     },
-    // First, second, third or final
-    number: {
+    // Prova/trabalho 1, 2, 3 ou final
+    numero: {
         type: String
     },
-    substituive: {
+    substitutiva: {
         type: Boolean,
         default: false
     },
-    year: {
+    ano: {
         type: Number
     },
-    semester: {
+    semestre: {
         type: Number
     },
-    // Path to file
-    file: {
+    // Caminho até o arquivo
+    arquivo: {
         type: String,
         required: true
     },
-    // Approved or pendent
+    // Aprovado ou pendente
     status: {
         type: String,
         default: 'pendente'
     },
-    // PDF or image?
-    fileType: {
+    // PDF ou image?
+    tipoArquivo: {
         type: String
     },
     materia: {
         type: Schema.Types.ObjectId,
         ref: 'Materia'
     },
-    teacher: {
+    professor: {
         type: Schema.Types.ObjectId,
-        ref: 'Teacher'
+        ref: 'Professor'
     },
     // Who uploaded
-    user: {
+    usuario: {
         type: Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'Usuario'
     }
 })
 
-module.exports = mongoose.model('Test', Test)
+module.exports = mongoose.model('Arquivo', Arquivo)

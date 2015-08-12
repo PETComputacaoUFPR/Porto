@@ -2,8 +2,8 @@ var mongoose = require('mongoose')
 var crypto = require('crypto')
 var Schema = mongoose.Schema
 
-var User = new Schema({
-    name: {
+var Usuario = new Schema({
+    nome: {
         type: String,
         required: true
     },
@@ -20,7 +20,7 @@ var User = new Schema({
         type: String,
         required: true
     },
-    created: {
+    criado: {
         type: Date,
         default: Date.now
     },
@@ -29,7 +29,7 @@ var User = new Schema({
         default: false,
         required: true
     },
-    moderator: {
+    moderador: {
         type: Boolean,
         default: false,
         required: false
@@ -40,28 +40,28 @@ var User = new Schema({
     }
 })
 
-User.methods.encryptPassword = function(password) {
+Usuario.methods.encryptPassword = function(password) {
     return crypto.createHmac('sha1', this.salt).update(password).digest('hex')
     //more secure - return crypto.pbkdf2Sync(password, this.salt, 10000, 512)
 }
 
-User.virtual('userId')
+Usuario.virtual('userId')
 .get(function () {
     return this.id
 })
 
-User.virtual('password')
+Usuario.virtual('password')
     .set(function(password) {
         this._plainPassword = password
-        this.salt = crypto.randomBytes(32).toString('hex')
+        this.salt = crypto.randomBytes(64).toString('hex')
                 //more secure - this.salt = crypto.randomBytes(128).toString('hex')
                 this.hashedPassword = this.encryptPassword(password)
             })
     .get(function() { return this._plainPassword })
 
 
-User.methods.checkPassword = function(password) {
+Usuario.methods.checkPassword = function(password) {
     return this.encryptPassword(password) === this.hashedPassword
 }
 
-module.exports = mongoose.model('User', User)
+module.exports = mongoose.model('Usuario', Usuario)

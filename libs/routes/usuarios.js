@@ -5,10 +5,10 @@ var router = express.Router()
 var libs = process.cwd() + '/libs/'
 
 var db = require(libs + 'db/mongoose')
-var User = require(libs + 'model/user')
+var Usuario = require(libs + 'model/usuario')
 
 router.get('/', passport.authenticate('bearer', { session: false }), function(req, res) {
-    User.find()
+    Usuario.find()
         .exec(function(err, users) {
             if(!err) {
                 for (var i=0; i < users.length; i++) {
@@ -27,19 +27,18 @@ router.get('/', passport.authenticate('bearer', { session: false }), function(re
 })
 
 router.get('/me', passport.authenticate('bearer', { session: false }), function(req, res) {
-    console.log(req.user)
     res.json({
         user_id: req.user.userId,
-        name: req.user.name,
+        nome: req.user.nome,
         username: req.user.username,
         admin: req.user.admin,
-        moderator: req.user.moderator,
+        moderador: req.user.moderador,
         scope: req.authInfo.scope
     })
 })
 
 router.get('/:id', function(req, res) {
-    User.findById(req.params.id)
+    Usuario.findById(req.params.id)
         .exec(function(err, user) {
             if(!user) {
                 res.statusCode = 404
@@ -59,7 +58,7 @@ router.get('/:id', function(req, res) {
 })
 
 router.post('/', passport.authenticate('bearer', { session: false }), function(req, res) {
-    var user = new User({
+    var user = new Usuario({
         name: req.body.name,
         username: req.body.username,
         password: req.body.password,
@@ -86,7 +85,7 @@ router.post('/', passport.authenticate('bearer', { session: false }), function(r
 router.put('/:id', passport.authenticate('bearer', { session: false }), function(req, res) {
     var memberId = req.params.id
 
-    User.findById(memberId, function(err, user) {
+    Usuario.findById(memberId, function(err, user) {
         if(!user) {
             res.statusCode = 404
             return res.json({error: 'Not found'})

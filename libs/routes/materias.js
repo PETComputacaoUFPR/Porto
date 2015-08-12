@@ -39,8 +39,8 @@ router.get('/:id', function(req, res) {
 
 router.post('/', passport.authenticate('bearer', { session: false }), function(req, res) {
     var materia = new Materia({
-        name: req.body.name,
-        code: req.body.code
+        nome: req.body.nome,
+        codigo: req.body.codigo
     })
 
     materia.save(function (err) {
@@ -68,8 +68,8 @@ router.put('/:id', passport.authenticate('bearer', { session: false }), function
             return res.json({error: 'Not found'})
         }
 
-        materia.name = req.body.name
-        materia.code = req.body.code
+        materia.nome = req.body.nome
+        materia.codigo = req.body.codigo
 
         materia.save(function(err) {
             if(!err) {

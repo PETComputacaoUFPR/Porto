@@ -5,13 +5,13 @@ var router = express.Router()
 var libs = process.cwd() + '/libs/'
 
 var db = require(libs + 'db/mongoose')
-var Teacher = require(libs + 'model/teacher')
+var Professor = require(libs + 'model/professor')
 
 router.get('/', function(req, res) {
-    Teacher.find()
-        .exec(function(err, members) {
+    Professor.find()
+        .exec(function(err, professores) {
             if(!err) {
-                return res.json(members)
+                return res.json(professores)
             } else {
                 res.statusCode = 500
                 console.log('Internal error(%d): %s', res.statusCode, err.message)
@@ -21,14 +21,14 @@ router.get('/', function(req, res) {
 })
 
 router.get('/:id', function(req, res) {
-    Teacher.findById(req.params.id)
-        .exec(function(err, teacher) {
-            if(!teacher) {
+    Professor.findById(req.params.id)
+        .exec(function(err, professor) {
+            if(!professor) {
                 res.statusCode = 404
                 return res.json({error: 'Not found'})
             }
             if(!err) {
-                return res.json({status: 'OK', teacher:teacher})
+                return res.json({status: 'OK', professor:professor})
             } else {
                 res.statusCode = 500
                 console.log('Internal error(%d): %s', res.statusCode, err.message)
@@ -38,13 +38,13 @@ router.get('/:id', function(req, res) {
 })
 
 router.post('/', passport.authenticate('bearer', { session: false }), function(req, res) {
-    var teacher = new Teacher({
-        name: req.body.name
+    var professor = new Professor({
+        nome: req.body.nome
     })
 
-    teacher.save(function (err) {
+    professor.save(function (err) {
         if(!err) {
-            return res.json({status: 'OK', teacher:teacher})
+            return res.json({status: 'OK', professor:professor})
         } else {
             if(err.name === 'ValidationError') {
                 res.statusCode = 400
@@ -61,17 +61,17 @@ router.post('/', passport.authenticate('bearer', { session: false }), function(r
 router.put('/:id', passport.authenticate('bearer', { session: false }), function(req, res) {
     var memberId = req.params.id
 
-    Teacher.findById(memberId, function(err, teacher) {
-        if(!teacher) {
+    Professor.findById(memberId, function(err, professor) {
+        if(!professor) {
             res.statusCode = 404
             return res.json({error: 'Not found'})
         }
 
-        teacher.name = req.body.name
+        professor.nome = req.body.nome
 
-        teacher.save(function(err) {
+        professor.save(function(err) {
             if(!err) {
-                return res.json({status: 'OK', teacher:teacher})
+                return res.json({status: 'OK', professor:professor})
             } else {
                 if(err.name === 'ValidationError') {
                     res.statusCode = 400

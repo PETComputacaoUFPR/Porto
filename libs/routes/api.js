@@ -4,7 +4,7 @@ var router = express.Router()
 
 router.get('/', function (req, res) {
     res.json({
-        msg: 'API is running'
+        status: 'OK'
     })
 })
 

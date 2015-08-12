@@ -6,22 +6,22 @@ var log = require(libs + 'log')(module)
 var db = require(libs + 'db/mongoose')
 var config = require(libs + 'config')
 
-var User = require(libs + 'model/user')
+var Usuario = require(libs + 'model/usuario')
 var Client = require(libs + 'model/client')
 var AccessToken = require(libs + 'model/accessToken')
 var RefreshToken = require(libs + 'model/refreshToken')
 
-User.remove({}, function(err) {
-    var user = new User({
-        name: config.get('default:user:name'),
-        username: config.get('default:user:username'),
-        password: config.get('default:user:password'),
-        email: config.get('default:user:email')
+Usuario.remove({}, function(err) {
+    var usuario = new Usuario({
+        nome: config.get('default:usuario:nome'),
+        username: config.get('default:usuario:username'),
+        password: config.get('default:usuario:password'),
+        email: config.get('default:usuario:email')
     })
 
-    user.save(function(err, user) {
+    usuario.save(function(err, usuario) {
         if(!err) {
-            log.info('New user - %s:%s', user.username, user.password)
+            log.info('New usuario - %s:%s', usuario.username, usuario.password)
         }else {
             return log.error(err)
         }
