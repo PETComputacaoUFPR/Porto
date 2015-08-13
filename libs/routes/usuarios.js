@@ -73,7 +73,7 @@ router.put('/me/edit', passport.authenticate('bearer', { session: false }), func
     })
 })
 
-router.get('/:id', passport.authenticate('bearer', { session: false }), role.isModerador(), function(req, res, next) {
+router.get('/:id', passport.authenticate('bearer', { session: false }), role.isModerador(), function(req, res) {
     Usuario.findById(req.params.id)
         .exec(function(err, usuario) {
             if(!usuario) {
