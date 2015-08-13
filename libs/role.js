@@ -6,7 +6,7 @@ module.exports = {
                 next()
             } else {
                 res.statusCode = 403
-                res.end('Forbidden')
+                res.json({error: 'Forbidden'})
             }
         }
     },
@@ -17,7 +17,7 @@ module.exports = {
                 next()
             } else {
                 res.statusCode = 403
-                res.end('Forbidden')
+                res.json({error: 'Forbidden'})
             }
         }
     }
