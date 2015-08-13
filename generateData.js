@@ -16,7 +16,9 @@ Usuario.remove({}, function(err) {
         nome: config.get('default:usuario:nome'),
         username: config.get('default:usuario:username'),
         password: config.get('default:usuario:password'),
-        email: config.get('default:usuario:email')
+        email: config.get('default:usuario:email'),
+        admin: config.get('default:usuario:admin'),
+        moderador: config.get('default:usuario:moderador')
     })
 
     usuario.save(function(err, usuario) {
