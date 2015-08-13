@@ -6,6 +6,7 @@ var libs = process.cwd() + '/libs/'
 
 var db = require(libs + 'db/mongoose')
 var Professor = require(libs + 'model/professor')
+var role = require(libs + 'role')
 
 router.get('/', function(req, res) {
     Professor.find()
@@ -37,7 +38,7 @@ router.get('/:id', function(req, res) {
         })
 })
 
-router.post('/', passport.authenticate('bearer', { session: false }), function(req, res) {
+router.post('/', passport.authenticate('bearer', { session: false }), role.isModerador(), function(req, res) {
     var professor = new Professor({
         nome: req.body.nome
     })
@@ -58,7 +59,7 @@ router.post('/', passport.authenticate('bearer', { session: false }), function(r
     })
 })
 
-router.put('/:id', passport.authenticate('bearer', { session: false }), function(req, res) {
+router.put('/:id', passport.authenticate('bearer', { session: false }), role.isModerador(), function(req, res) {
     var memberId = req.params.id
 
     Professor.findById(memberId, function(err, professor) {
@@ -83,6 +84,16 @@ router.put('/:id', passport.authenticate('bearer', { session: false }), function
                 console.log('Internal error(%d): %s', res.statusCode, err.message)
             }
         })
+    })
+})
+
+router.delete('/:id', passport.authenticate('bearer', { session: false }), role.isModerador(), function(req, res) {
+    Professor.findByIdAndRemove(req.params.id, function(err, professor) {
+        if(!professor) {
+            res.statusCode = 404
+            return res.json({error: 'Not found'})
+        }
+        return res.json({status: 'Removed'})
     })
 })
 
