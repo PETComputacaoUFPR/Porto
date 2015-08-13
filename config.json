@@ -14,7 +14,9 @@
             "nome": "PET Computação",
             "username": "root",
             "password": "root",
-            "email": "pet@inf.ufpr.br"
+            "email": "pet@inf.ufpr.br",
+            "admin": true,
+            "moderador": true
         },
         "client": {
             "name": "Farol - Repositório de Provas",

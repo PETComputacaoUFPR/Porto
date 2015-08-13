@@ -32,11 +32,15 @@ var Usuario = new Schema({
     moderador: {
         type: Boolean,
         default: false,
-        required: false
+        required: true
     },
     email: {
         type: String,
         required: true
+    },
+    bloqueado: {
+        type: Boolean,
+        default: false
     }
 })
 

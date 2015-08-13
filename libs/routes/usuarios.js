@@ -6,18 +6,19 @@ var libs = process.cwd() + '/libs/'
 
 var db = require(libs + 'db/mongoose')
 var Usuario = require(libs + 'model/usuario')
+var role = require(libs + 'role')
 
-router.get('/', passport.authenticate('bearer', { session: false }), function(req, res) {
+router.get('/', passport.authenticate('bearer', { session: false }), role.isModerador(), function(req, res) {
     Usuario.find()
-        .exec(function(err, users) {
+        .exec(function(err, usuarios) {
             if(!err) {
-                for (var i=0; i < users.length; i++) {
-                    u = users[i].toObject()
+                for (var i=0; i < usuarios.length; i++) {
+                    u = usuarios[i].toObject()
                     delete u.hashedPassword
                     delete u.salt
-                    users[i] = u
+                    usuarios[i] = u
                 }
-                return res.json(users)
+                return res.json(usuarios)
             } else {
                 res.statusCode = 500
                 console.log('Internal error(%d): %s', res.statusCode, err.message)
@@ -37,18 +38,53 @@ router.get('/me', passport.authenticate('bearer', { session: false }), function(
     })
 })
 
-router.get('/:id', function(req, res) {
+router.put('/me/edit', passport.authenticate('bearer', { session: false }), function(req, res) {
+    Usuario.findById(req.user.userId, function(err, usuario) {
+        if(!usuario) {
+            res.statusCode = 404
+            return res.json({error: 'Not found'})
+        }
+
+        if(!err) {
+            usuario.nome = req.body.nome || usuario.nome
+            usuario.username = req.body.username || usuario.username
+            usuario.email = req.body.email || usuario.email
+            usuario.password = req.body.password || usuario.password
+
+            usuario.save(function(err) {
+                if(!err) {
+                    return res.json({status: 'OK', usuario:usuario})
+                } else {
+                    if(err.name === 'ValidationError') {
+                        res.statusCode = 400
+                        res.json({error: 'Validation error'})
+                    } else {
+                        res.statusCode = 500
+                        res.json({error: 'Server error'})
+                    }
+                    console.log('Internal error(%d): %s', res.statusCode, err.message)
+                }
+            })
+        } else {
+            res.statusCode = 500
+            console.log('Internal error(%d): %s', res.statusCode, err.message)
+            return res.json({error: 'Server error'})
+        }
+    })
+})
+
+router.get('/:id', passport.authenticate('bearer', { session: false }), role.isModerador(), function(req, res, next) {
     Usuario.findById(req.params.id)
-        .exec(function(err, user) {
-            if(!user) {
+        .exec(function(err, usuario) {
+            if(!usuario) {
                 res.statusCode = 404
                 return res.json({error: 'Not found'})
             }
             if(!err) {
-                user = user.toObject()
-                delete user.hashedPassword
-                delete user.salt
-                return res.json({status: 'OK', user:user})
+                usuario = usuario.toObject()
+                delete usuario.hashedPassword
+                delete usuario.salt
+                return res.json({status: 'OK', usuario:usuario})
             } else {
                 res.statusCode = 500
                 console.log('Internal error(%d): %s', res.statusCode, err.message)
@@ -57,18 +93,19 @@ router.get('/:id', function(req, res) {
         })
 })
 
-router.post('/', passport.authenticate('bearer', { session: false }), function(req, res) {
-    var user = new Usuario({
-        name: req.body.name,
+router.post('/', function(req, res) {
+    var usuario = new Usuario({
+        nome: req.body.nome,
         username: req.body.username,
+        email: req.body.email,
         password: req.body.password,
-        admin: req.body.admin,
-        moderator: req.body.moderator
+        admin: false,
+        moderador: false
     })
 
-    user.save(function (err) {
+    usuario.save(function (err) {
         if(!err) {
-            return res.json({status: 'OK', user:user})
+            return res.json({status: 'OK', usuario:usuario})
         } else {
             if(err.name === 'ValidationError') {
                 res.statusCode = 400
@@ -82,24 +119,20 @@ router.post('/', passport.authenticate('bearer', { session: false }), function(r
     })
 })
 
-router.put('/:id', passport.authenticate('bearer', { session: false }), function(req, res) {
-    var memberId = req.params.id
-
-    Usuario.findById(memberId, function(err, user) {
-        if(!user) {
+router.put('/:id', passport.authenticate('bearer', { session: false }), role.isAdmin(), function(req, res) {
+    Usuario.findById(req.params.id, function(err, usuario) {
+        if(!usuario) {
             res.statusCode = 404
             return res.json({error: 'Not found'})
         }
 
-        user.name = req.body.name
-        user.username = req.body.username
-        user.password = req.body.password
-        user.admin = req.body.admin
-        user.moderator = req.body.moderator
+        usuario.admin = req.body.admin || usuario.admin
+        usuario.moderador = req.body.moderador || usuario.moderador
+        usuario.bloqueado = req.body.bloqueado || usuario.bloqueado
 
-        user.save(function(err) {
+        usuario.save(function(err) {
             if(!err) {
-                return res.json({status: 'OK', user:user})
+                return res.json({status: 'OK', usuario:usuario})
             } else {
                 if(err.name === 'ValidationError') {
                     res.statusCode = 400
@@ -111,6 +144,42 @@ router.put('/:id', passport.authenticate('bearer', { session: false }), function
                 console.log('Internal error(%d): %s', res.statusCode, err.message)
             }
         })
+    })
+})
+
+router.put('/block/:id', passport.authenticate('bearer', { session: false }), role.isModerador(), function(req, res) {
+    Usuario.findById(req.params.id, function(err, usuario) {
+        if(!usuario) {
+            res.statusCode = 404
+            return res.json({error: 'Not found'})
+        }
+
+        usuario.bloqueado = !usuario.bloqueado
+
+        usuario.save(function(err) {
+            if(!err) {
+                return res.json({status: 'OK', usuario:usuario})
+            } else {
+                if(err.name === 'ValidationError') {
+                    res.statusCode = 400
+                    res.json({error: 'Validation error'})
+                } else {
+                    res.statusCode = 500
+                    res.json({error: 'Server error'})
+                }
+                console.log('Internal error(%d): %s', res.statusCode, err.message)
+            }
+        })
+    })
+})
+
+router.delete('/:id', passport.authenticate('bearer', { session: false }), role.isAdmin(), function(req, res) {
+    Usuario.findByIdAndRemove(req.params.id, function(err, usuario) {
+        if(!usuario) {
+            res.statusCode = 404
+            return res.json({error: 'Not found'})
+        }
+        return res.json({status: 'Removed'})
     })
 })
 
