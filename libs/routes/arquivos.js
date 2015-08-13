@@ -9,8 +9,11 @@ var libs = process.cwd() + '/libs/'
 
 var db = require(libs + 'db/mongoose')
 var Arquivo = require(libs + 'model/arquivo')
+var role = require(libs + 'role')
 
-router.get('/', passport.authenticate('bearer', { session: false }), function(req, res) {
+router.use(passport.authenticate('bearer', { session: false }))
+
+router.get('/', role.isModerador(), function(req, res) {
     Arquivo.find()
         .populate('materia')
         .populate('professor')
@@ -26,7 +29,7 @@ router.get('/', passport.authenticate('bearer', { session: false }), function(re
         })
 })
 
-router.get('/:id', passport.authenticate('bearer', { session: false }), function(req, res) {
+router.get('/:id', role.isModerador(), function(req, res) {
     Arquivo.findById(req.params.id)
         .populate('materia')
         .populate('professor')
@@ -46,7 +49,7 @@ router.get('/:id', passport.authenticate('bearer', { session: false }), function
         })
 })
 
-router.get('/status/:status', passport.authenticate('bearer', { session: false }), function(req, res) {
+router.get('/status/:status', role.isModerador(), function(req, res) {
     Arquivo.find({status: req.params.status})
         .populate('materia')
         .populate('professor')
@@ -62,7 +65,7 @@ router.get('/status/:status', passport.authenticate('bearer', { session: false }
         })
 })
 
-router.post('/', upload.array('files', 1), passport.authenticate('bearer', { session: false }), function(req, res) {
+router.post('/', upload.array('files', 1), function(req, res) {
     /*
     No momento é feito o upload de apenas 1 arquivo. Logo esse for é "inútil"
     Mas, na verdade, este for está já está pensando quando vierem multiplas imagens
@@ -102,7 +105,7 @@ router.post('/', upload.array('files', 1), passport.authenticate('bearer', { ses
     }
 })
 
-router.put('/:id', passport.authenticate('bearer', { session: false }), function(req, res) {
+router.put('/:id', function(req, res) {
 
     Arquivo.findById(memberId, function(err, arquivo) {
         if(!arquivo) {
@@ -135,7 +138,7 @@ router.put('/:id', passport.authenticate('bearer', { session: false }), function
     })
 })
 
-router.put('/status/:id', passport.authenticate('bearer', { session: false }), function(req, res) {
+router.put('/status/:id', role.isModerador(), function(req, res) {
     var memberId = req.params.id
 
     Arquivo.findById(memberId, function(err, arquivo) {
@@ -160,6 +163,16 @@ router.put('/status/:id', passport.authenticate('bearer', { session: false }), f
                 console.log('Internal error(%d): %s', res.statusCode, err.message)
             }
         })
+    })
+})
+
+router.delete('/:id', role.isModerador(), function(req, res) {
+    Arquivo.findByIdAndRemove(req.params.id, function(err, arquivo) {
+        if(!arquivo) {
+            res.statusCode = 404
+            return res.json({error: 'Not found'})
+        }
+        return res.json({status: 'Removed'})
     })
 })
 
