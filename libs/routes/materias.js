@@ -6,6 +6,7 @@ var libs = process.cwd() + '/libs/'
 
 var db = require(libs + 'db/mongoose')
 var Materia = require(libs + 'model/materia')
+var role = require(libs + 'role')
 
 router.get('/', function(req, res) {
     Materia.find()
@@ -37,10 +38,10 @@ router.get('/:id', function(req, res) {
         })
 })
 
-router.post('/', passport.authenticate('bearer', { session: false }), function(req, res) {
+router.post('/', passport.authenticate('bearer', { session: false }), role.isModerador(), function(req, res) {
     var materia = new Materia({
-        name: req.body.name,
-        code: req.body.code
+        nome: req.body.nome,
+        codigo: req.body.codigo
     })
 
     materia.save(function (err) {
@@ -59,7 +60,7 @@ router.post('/', passport.authenticate('bearer', { session: false }), function(r
     })
 })
 
-router.put('/:id', passport.authenticate('bearer', { session: false }), function(req, res) {
+router.put('/:id', passport.authenticate('bearer', { session: false }), role.isModerador(), function(req, res) {
     var memberId = req.params.id
 
     Materia.findById(memberId, function(err, materia) {
@@ -68,8 +69,8 @@ router.put('/:id', passport.authenticate('bearer', { session: false }), function
             return res.json({error: 'Not found'})
         }
 
-        materia.name = req.body.name
-        materia.code = req.body.code
+        materia.nome = req.body.nome
+        materia.codigo = req.body.codigo
 
         materia.save(function(err) {
             if(!err) {
@@ -85,6 +86,16 @@ router.put('/:id', passport.authenticate('bearer', { session: false }), function
                 console.log('Internal error(%d): %s', res.statusCode, err.message)
             }
         })
+    })
+})
+
+router.delete('/:id', passport.authenticate('bearer', { session: false }), role.isAdmin(), function(req, res) {
+    Materia.findByIdAndRemove(req.params.id, function(err, materia) {
+        if(!materia) {
+            res.statusCode = 404
+            return res.json({error: 'Not found'})
+        }
+        return res.json({status: 'Removed'})
     })
 })
 

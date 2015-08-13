@@ -10,14 +10,17 @@
         "api": {
             "version" : "v1"
         },
-        "user": {
-            "name": "Root",
+        "usuario": {
+            "nome": "PET Computação",
             "username": "root",
-            "password": "root"
+            "password": "root",
+            "email": "pet@inf.ufpr.br",
+            "admin": true,
+            "moderador": true
         },
         "client": {
             "name": "Farol - Repositório de Provas",
-            "clientId": "farol-web",
+            "clientId": "farol",
             "clientSecret": "KeepItSecret"
         }
     }

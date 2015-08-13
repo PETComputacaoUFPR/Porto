@@ -2,11 +2,11 @@ var mongoose = require('mongoose')
 var Schema = mongoose.Schema
 
 var Materia = new Schema({
-	name: {
-		type: String,
-		required: true
-	},
-    code: {
+    nome: {
+        type: String,
+        required: true
+    },
+    codigo: {
         type: String,
         required: true,
         unique: true

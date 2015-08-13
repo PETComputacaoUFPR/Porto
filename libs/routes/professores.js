@@ -5,13 +5,14 @@ var router = express.Router()
 var libs = process.cwd() + '/libs/'
 
 var db = require(libs + 'db/mongoose')
-var User = require(libs + 'model/user')
+var Professor = require(libs + 'model/professor')
+var role = require(libs + 'role')
 
 router.get('/', function(req, res) {
-    User.find()
-        .exec(function(err, members) {
+    Professor.find()
+        .exec(function(err, professores) {
             if(!err) {
-                return res.json(members)
+                return res.json(professores)
             } else {
                 res.statusCode = 500
                 console.log('Internal error(%d): %s', res.statusCode, err.message)
@@ -21,14 +22,14 @@ router.get('/', function(req, res) {
 })
 
 router.get('/:id', function(req, res) {
-    User.findById(req.params.id)
-        .exec(function(err, user) {
-            if(!user) {
+    Professor.findById(req.params.id)
+        .exec(function(err, professor) {
+            if(!professor) {
                 res.statusCode = 404
                 return res.json({error: 'Not found'})
             }
             if(!err) {
-                return res.json({status: 'OK', user:user})
+                return res.json({status: 'OK', professor:professor})
             } else {
                 res.statusCode = 500
                 console.log('Internal error(%d): %s', res.statusCode, err.message)
@@ -37,18 +38,14 @@ router.get('/:id', function(req, res) {
         })
 })
 
-router.post('/', passport.authenticate('bearer', { session: false }), function(req, res) {
-    var user = new User({
-        name: req.body.name,
-        username: req.body.username,
-        password: req.body.password,
-        admin: req.body.admin,
-        moderator: req.body.moderator
+router.post('/', passport.authenticate('bearer', { session: false }), role.isModerador(), function(req, res) {
+    var professor = new Professor({
+        nome: req.body.nome
     })
 
-    user.save(function (err) {
+    professor.save(function (err) {
         if(!err) {
-            return res.json({status: 'OK', user:user})
+            return res.json({status: 'OK', professor:professor})
         } else {
             if(err.name === 'ValidationError') {
                 res.statusCode = 400
@@ -62,24 +59,20 @@ router.post('/', passport.authenticate('bearer', { session: false }), function(r
     })
 })
 
-router.put('/:id', passport.authenticate('bearer', { session: false }), function(req, res) {
+router.put('/:id', passport.authenticate('bearer', { session: false }), role.isModerador(), function(req, res) {
     var memberId = req.params.id
 
-    User.findById(memberId, function(err, user) {
-        if(!user) {
+    Professor.findById(memberId, function(err, professor) {
+        if(!professor) {
             res.statusCode = 404
             return res.json({error: 'Not found'})
         }
 
-        user.name = req.body.name
-        user.username = req.body.username
-        user.password = req.body.password
-        user.admin = req.body.admin
-        user.moderator = req.body.moderator
+        professor.nome = req.body.nome
 
-        user.save(function(err) {
+        professor.save(function(err) {
             if(!err) {
-                return res.json({status: 'OK', user:user})
+                return res.json({status: 'OK', professor:professor})
             } else {
                 if(err.name === 'ValidationError') {
                     res.statusCode = 400
@@ -91,6 +84,16 @@ router.put('/:id', passport.authenticate('bearer', { session: false }), function
                 console.log('Internal error(%d): %s', res.statusCode, err.message)
             }
         })
+    })
+})
+
+router.delete('/:id', passport.authenticate('bearer', { session: false }), role.isModerador(), function(req, res) {
+    Professor.findByIdAndRemove(req.params.id, function(err, professor) {
+        if(!professor) {
+            res.statusCode = 404
+            return res.json({error: 'Not found'})
+        }
+        return res.json({status: 'Removed'})
     })
 })
 
