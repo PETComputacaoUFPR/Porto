@@ -68,4 +68,8 @@ Usuario.methods.checkPassword = function(password) {
     return this.encryptPassword(password) === this.hashedPassword
 }
 
+Usuario.path('email').validate(function (value) {
+    return /[\s\S]*@?ufpr.br/.test(value)
+}, 'E-mail validation failed')
+
 module.exports = mongoose.model('Usuario', Usuario)
