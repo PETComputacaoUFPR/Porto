@@ -6,15 +6,15 @@ function logger(module) {
 
     return new winston.Logger({
         transports : [
-            new winston.transports.File({
-                level: 'info',
-                filename: process.cwd() + '/logs/all.log',
-                handleException: true,
-                json: true,
-                maxSize: 5242880, //5mb
-                maxFiles: 2,
-                colorize: false
-            }),
+            // new winston.transports.File({
+            //     level: 'info',
+            //     filename: process.cwd() + '/logs/all.log',
+            //     handleException: true,
+            //     json: true,
+            //     maxSize: 5242880, //5mb
+            //     maxFiles: 2,
+            //     colorize: false
+            // }),
             new winston.transports.Console({
                 level: 'debug',
                 label: getFilePath(module),
