@@ -5,7 +5,9 @@ var libs = process.cwd() + '/libs/'
 var log = require(libs + 'log')(module)
 var config = require(libs + 'config')
 
-mongoose.connect(config.get('mongoose:uri'))
+var uri = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || config.get('mongoose:uri')
+
+mongoose.connect(uri)
 
 var db = mongoose.connection
 
