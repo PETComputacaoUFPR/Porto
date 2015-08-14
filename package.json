@@ -5,7 +5,7 @@
   "description": "API RESTful para o Farol",
   "private": true,
   "scripts": {
-    "start": "nodemon server.js || node server.js",
+    "start": "node server.js",
     "configure": "node generateData.js"
   },
   "dependencies": {
