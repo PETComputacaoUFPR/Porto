@@ -56,7 +56,7 @@ router.get('/status/:status', role.isModerador(), function(req, res) {
         .populate('usuario')
         .exec(function(err, tests) {
             if(!err) {
-                return res.json(tests)
+                return res.json({arquivos: tests})
             } else {
                 res.statusCode = 500
                 console.log('Internal error(%d): %s', res.statusCode, err.message)
