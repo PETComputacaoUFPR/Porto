@@ -138,7 +138,7 @@ router.put('/:id', function(req, res) {
     })
 })
 
-router.put('/status/:id', role.isModerador(), function(req, res) {
+router.put('/:id/status', role.isModerador(), function(req, res) {
     var memberId = req.params.id
 
     Arquivo.findById(memberId, function(err, arquivo) {
