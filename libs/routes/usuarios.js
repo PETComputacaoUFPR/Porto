@@ -147,7 +147,7 @@ router.put('/:id', passport.authenticate('bearer', { session: false }), role.isA
     })
 })
 
-router.put('/block/:id', passport.authenticate('bearer', { session: false }), role.isModerador(), function(req, res) {
+router.post('/:id/block', passport.authenticate('bearer', { session: false }), role.isModerador(), function(req, res) {
     Usuario.findById(req.params.id, function(err, usuario) {
         if(!usuario) {
             res.statusCode = 404
