@@ -6,7 +6,8 @@
   "private": true,
   "scripts": {
     "start": "node generateData.js && node server.js",
-    "configure": "node generateData.js"
+    "configure": "node generateData.js",
+    "test": "./node_modules/.bin/mocha"
   },
   "dependencies": {
     "body-parser": "^1.13.1",
@@ -26,5 +27,11 @@
     "passport-oauth2-client-password": "^0.1.2",
     "winston": "^0.8.x"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "assert": "^1.3.0",
+    "mocha": "^2.2.5",
+    "should": "^7.0.4",
+    "supertest": "^1.0.1"
+  }
 }
