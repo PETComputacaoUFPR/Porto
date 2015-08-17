@@ -8,8 +8,45 @@ var config = require(libs + 'config')
 
 var Usuario = require(libs + 'model/usuario')
 var Client = require(libs + 'model/client')
+var Materia = require(libs + 'model/materia')
+var Professor = require(libs + 'model/professor')
 var AccessToken = require(libs + 'model/accessToken')
 var RefreshToken = require(libs + 'model/refreshToken')
+
+var inserts = require(libs + 'data/inserts')
+
+Materia.remove({}, function(err) {
+    inserts.materias.forEach(function(m){
+        var materia  = new Materia({
+            codigo: m.codigo,
+            nome: m.nome
+        })
+
+        materia.save(function(err, materia) {
+            if(!err) {
+                log.info('Materia - %s:%s', materia.codigo, materia.nome)
+            } else {
+                log.error(err.message)
+            }
+        })
+    })
+})
+
+Professor.remove({}, function(err) {
+    inserts.professores.forEach(function(p){
+        var professor  = new Professor({
+            nome: p.nome
+        })
+
+        professor.save(function(err, professor) {
+            if(!err) {
+                log.info('Professor - %s', professor.nome)
+            } else {
+                log.error(err.message)
+            }
+        })
+    })
+})
 
 Usuario.remove({}, function(err) {
     var usuario = new Usuario({
