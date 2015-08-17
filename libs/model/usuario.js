@@ -41,6 +41,10 @@ var Usuario = new Schema({
     bloqueado: {
         type: Boolean,
         default: false
+    },
+    verificado: {
+        type: Boolean,
+        default: false
     }
 })
 

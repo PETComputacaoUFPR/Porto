@@ -22,6 +22,10 @@
             "name": "Farol - Repositório de Provas",
             "clientId": "farol",
             "clientSecret": "KeepItSecret"
+        },
+        "email": {
+            "user": "petcomputacaoufpr",
+            "password": ""
         }
     }
 }
