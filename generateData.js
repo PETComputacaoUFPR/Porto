@@ -33,6 +33,8 @@ Arquivo.remove({}, function(err) {
                 }
             }
         }    
+        fs.rmdirSync(dir)
+        fs.mkdirSync(dir)
     } catch(e) {
         log.error(e)
     }
