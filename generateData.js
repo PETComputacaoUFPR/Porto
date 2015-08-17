@@ -1,4 +1,5 @@
 var faker = require('faker')
+var fs = require('fs')
 
 var libs = process.cwd() + '/libs/'
 
@@ -10,10 +11,28 @@ var Usuario = require(libs + 'model/usuario')
 var Client = require(libs + 'model/client')
 var Materia = require(libs + 'model/materia')
 var Professor = require(libs + 'model/professor')
+var Arquivo = require(libs + 'model/arquivo')
 var AccessToken = require(libs + 'model/accessToken')
 var RefreshToken = require(libs + 'model/refreshToken')
 
 var inserts = require(libs + 'data/inserts')
+
+Arquivo.remove({}, function(err) {
+    var dir = process.cwd() + '/uploads/'
+    try{
+        var files = fs.readdirSync(dir)
+    } catch(e) {
+        log.error(e)
+    }
+    if(files.length > 0) {
+        for(var i = 0; i < files.length; i++) {
+            var filePath = dir + files[i]
+            if(fs.statSync(filePath).isFile()) {
+                fs.unlinkSync(filePath)
+            }
+        }
+    }
+})
 
 Materia.remove({}, function(err) {
     inserts.materias.forEach(function(m){
