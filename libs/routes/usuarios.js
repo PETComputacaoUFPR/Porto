@@ -142,11 +142,12 @@ router.post('/', function(req, res) {
                 if (err) {
                     console.log('Não foi possível criar o token')
                 }
+                var text = 'Olá, ' + usuario.nome + '. Clique neste link para validar sua conta: ' + req.protocol + '://' + req.get('host') + '/v1/u/verify/' + token
                 var message = {
-                    text: req.protocol + '://' + req.get('host') + '/v1/u/verify/' + token,
                     from: 'PET Computação UFPR <pet@inf.ufpr.br>',
                     to: usuario.nome + ' <' + usuario.email + '>',
-                    subject: 'Farol - Confirmação de Conta'
+                    subject: 'Farol - Confirmação de Conta',
+                    text: text
                 }
 
                 server.send(message, function(err, message) {
