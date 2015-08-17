@@ -24,14 +24,19 @@ Arquivo.remove({}, function(err) {
     } catch(e) {
         log.error(e)
     }
-    if(files.length > 0) {
-        for(var i = 0; i < files.length; i++) {
-            var filePath = dir + files[i]
-            if(fs.statSync(filePath).isFile()) {
-                fs.unlinkSync(filePath)
+    try {
+        if(files.length > 0) {
+            for(var i = 0; i < files.length; i++) {
+                var filePath = dir + files[i]
+                if(fs.statSync(filePath).isFile()) {
+                    fs.unlinkSync(filePath)
+                }
             }
-        }
+        }    
+    } catch(e) {
+        log.error(e)
     }
+    
 })
 
 Materia.remove({}, function(err) {
