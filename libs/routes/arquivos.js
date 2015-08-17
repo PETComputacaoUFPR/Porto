@@ -65,7 +65,7 @@ router.get('/status/:status', role.isModerador(), function(req, res) {
         })
 })
 
-router.post('/', upload.array('files', 1), function(req, res) {
+router.post('/', role.isVerificado(), upload.array('files', 1), function(req, res) {
     /*
     No momento é feito o upload de apenas 1 arquivo. Logo esse for é "inútil"
     Mas, na verdade, este for está já está pensando quando vierem multiplas imagens

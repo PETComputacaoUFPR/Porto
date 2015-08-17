@@ -20,5 +20,16 @@ module.exports = {
                 res.json({error: 'Forbidden'})
             }
         }
+    },
+
+    isVerificado: function() {
+        return function (req, res, next) {
+            if(req.user.verificado && !req.user.bloqueado) {
+                next()
+            } else {
+                res.statusCode = 403
+                res.json({error: 'Forbidden'})
+            }
+        }
     }
 }
