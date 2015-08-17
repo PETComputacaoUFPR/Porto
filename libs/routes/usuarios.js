@@ -1,12 +1,22 @@
 var express = require('express')
 var passport = require('passport')
 var router = express.Router()
+var email = require('emailjs')
 
 var libs = process.cwd() + '/libs/'
 
 var db = require(libs + 'db/mongoose')
 var Usuario = require(libs + 'model/usuario')
+var VerificationToken = require(libs + 'model/verificationToken')
 var role = require(libs + 'role')
+var config = require(libs + 'config')
+
+var server = email.server.connect({
+    user: config.get('default:email:user'),
+    password: process.env.EMAILPASSWORD || config.get('default:email:password'),
+    host: 'smtp.gmail.com',
+    ssl: true
+})
 
 router.get('/', passport.authenticate('bearer', { session: false }), role.isModerador(), function(req, res) {
     Usuario.find()
@@ -35,6 +45,26 @@ router.get('/me', passport.authenticate('bearer', { session: false }), function(
         admin: req.user.admin,
         moderador: req.user.moderador,
         scope: req.authInfo.scope
+    })
+})
+
+router.get('/verify/:token', function(req, res) {
+    var token = req.params.token
+    VerificationToken.findOne({token: token}, function(err, vToken) {
+        if(err) {
+            console.log(err)
+            return res.json({error: 'Email verification failed'})
+        }
+        Usuario.findOne({_id: vToken.userId}, function(err, usuario) {
+            usuario.verificado = true
+            usuario.save(function(err) {
+                if(err) {
+                    console.log(err)
+                    return res.json({error: 'Email verification failed. Failed to update user'})
+                }
+                return res.json({status: 'OK'})
+            })
+        })
     })
 })
 
@@ -105,6 +135,25 @@ router.post('/', function(req, res) {
 
     usuario.save(function (err) {
         if(!err) {
+            var verificationToken = new VerificationToken({
+                userId: usuario._id
+            })
+            verificationToken.createVerificationToken(function(err, token) {
+                if (err) {
+                    console.log('Não foi possível criar o token')
+                }
+                var message = {
+                    text: req.protocol + '://' + req.get('host') + '/v1/u/verify/' + token,
+                    from: 'PET Computação UFPR <pet@inf.ufpr.br>',
+                    to: usuario.nome + ' <' + usuario.email + '>',
+                    subject: 'Farol - Confirmação de Conta'
+                }
+
+                server.send(message, function(err, message) {
+                    console.log(err || message)
+                })
+            })
+
             return res.json({status: 'OK', usuario:usuario})
         } else {
             if(err.name === 'ValidationError') {
