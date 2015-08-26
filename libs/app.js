@@ -35,6 +35,7 @@ app.use('/v1/materias', materias)
 app.use('/v1/professores', professores)
 app.use('/v1/arquivos', arquivos)
 app.use('/v1/oauth/token', oauth2.token)
+app.use('/uploads', express.static('uploads'))
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next){
