@@ -17,9 +17,11 @@ var storage = multer.diskStorage({
 var fileFilter = function(req, file, cb) {
     console.log(file.mimetype)
     if(file.mimetype === 'image/jpg' ||
+    file.mimetype === 'image/jpeg' ||
     file.mimetype === 'image/png' ||
     file.mimetype === 'application/pdf') {
         cb(null, true)
+        return
     }
     var err = new Error('Invalid file')
     err.status = 400
