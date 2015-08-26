@@ -14,7 +14,18 @@ var storage = multer.diskStorage({
         })
     }
 })
-var upload = multer({storage: storage})
+var fileFilter = function(req, file, cb) {
+    console.log(file.mimetype)
+    if(file.mimetype === 'image/jpg' ||
+    file.mimetype === 'image/png' ||
+    file.mimetype === 'application/pdf') {
+        cb(null, true)
+    }
+    var err = new Error('Invalid file')
+    err.status = 400
+    cb(err)
+}
+var upload = multer({storage: storage, fileFilter: fileFilter})
 var fs = require('fs')
 
 var libs = process.cwd() + '/libs/'
