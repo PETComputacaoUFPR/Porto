@@ -5,6 +5,7 @@ var bodyParser = require('body-parser')
 var passport = require('passport')
 var methodOverride = require('method-override')
 var cors = require('cors')
+var compression = require('compression')
 
 var libs = process.cwd() + '/libs/'
 require(libs + 'auth/auth')
@@ -21,12 +22,14 @@ var arquivos = require('./routes/arquivos')
 
 var app = express()
 
+app.use(compression({level: 9}))
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(cookieParser())
 app.use(methodOverride())
 app.use(passport.initialize())
+app.set('json spaces', 2)
 
 app.use('*', cors())
 app.use('/', api)
