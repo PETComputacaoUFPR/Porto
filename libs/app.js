@@ -24,21 +24,24 @@ var app = express()
 
 app.use(compression({level: 9}))
 app.use(cors())
-app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(methodOverride())
 app.use(passport.initialize())
 app.set('json spaces', 2)
 
-app.use('*', cors())
-app.use('/', api)
-app.use('/v1/u', usuarios)
-app.use('/v1/materias', materias)
-app.use('/v1/professores', professores)
-app.use('/v1/arquivos', arquivos)
-app.use('/v1/oauth/token', oauth2.token)
+app.use(express.static('client/public'))
 app.use('/uploads', express.static('uploads'))
+
+// Rotas da API REST
+app.use('/api/*', cors())
+app.use('/api/', api)
+app.use('/api/v1/u', usuarios)
+app.use('/api/v1/materias', materias)
+app.use('/api/v1/professores', professores)
+app.use('/api/v1/arquivos', arquivos)
+app.use('/api/v1/oauth/token', oauth2.token)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next){

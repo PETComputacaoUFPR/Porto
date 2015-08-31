@@ -1,0 +1,18 @@
+.list{
+    .list-title{
+        padding: $padding;
+        text-align: center;
+    }
+    .list-item{
+        @extend %clearfix;
+        margin: 0;
+        padding: $padding;
+        border-top: 1px solid lighten($gray, 30%);
+    }
+}
+
+ul.list{
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}

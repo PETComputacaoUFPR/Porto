@@ -1,0 +1,184 @@
+//Fonts
+@import url(https://fonts.googleapis.com/css?family=Montserrat);
+@import url(https://fonts.googleapis.com/css?family=Merriweather);
+$font-size: 1.3em;
+
+//Imports
+@import "mixin";
+@import "colors";
+@import "positioning";
+@import "buttons";
+@import "lists";
+@import "cards";
+@import "footer";
+
+html{
+	min-height: 100%;
+	position: relative;
+}
+
+body{
+	font-family: Merriweather, serif;
+	color: $squid-ink;
+	padding-bottom: $sticky-footer-height;
+	text-align: center;
+	margin: 0;
+	@extend .lighter;
+}
+
+a{
+	color: $deep-sea;
+	text-decoration: none;
+	&:hover{
+		text-decoration: underline;
+		cursor: pointer;
+		color: $nautical;
+	}
+}
+
+form{
+	margin: 0 auto;
+}
+
+header, nav{
+	font-family: Montserrat, sans-serif;
+}
+
+header{
+	@extend .dark;
+	box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+	padding: 5px 0 5px 0;
+	color: white;
+	a{
+		color: white;
+		&:hover{
+			color: white;
+		}
+	}
+	h3{
+		font-weight: 100;
+	}
+}
+
+footer{
+	@extend .red;
+	color: white;
+	padding: $padding 0 $padding 0; 
+	a{
+		color: inherit;
+		&:hover{
+			color: $squid-ink;
+		}
+	}
+}
+
+.index{
+	background-image: url(../imgs/Farol.png);
+	background-position: center center;
+	background-size: contain;
+	background-repeat: no-repeat;
+	margin-top: 20px;
+	padding-top: 20%;
+	height: 100%;
+	h1{
+		margin: 0;
+		font-family: 'Montserrat', sans-serif;
+		font-size: 5em;
+		text-transform: uppercase;
+		color: $nautical;
+		//text-shadow: 0px 0px 5px $light-gray;
+		text-shadow:
+		   -1px -1px 0 $light-gray,  
+		    1px -1px 0 $light-gray,
+		    -1px 1px 0 $light-gray,
+		     1px 1px 0 $light-gray;
+	}
+}
+
+.search-bar{
+	background-color: rgba(255,255,255,0.9);
+	box-shadow: inset 0px 1px 3px #ddd;
+	font-size: $font-size;
+	padding: 5px;
+	border: 1px solid $aqua;
+	box-sizing: border-box;
+	&:focus{
+		border: 1px solid $deep-sea;
+		outline: 0;
+	}
+	&::-webkit-search-cancel-button{
+		-webkit-appearance: none;
+		&:after{
+			font-family: FontAwesome;
+			content:'\f00d';
+			color: $crimson;
+		}
+	}
+}
+
+.uploadInfo{
+	box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.4);
+	background-color: white;
+	width: 200px;
+	margin: 5px 15px 5px 15px;
+	display: inline-block;
+}
+
+.uploadThumb{
+	max-width: 100%;
+}
+
+.thumb{
+    height: 75px;
+    border: 1px solid $aqua;
+    margin: 10px 5px 0 0;
+}
+
+.header{
+	text-align: left;
+	padding: 0;//0px 10px 0px 10px;
+	@extend %clearfix;
+	height: 100%;
+	nav{
+		//min-height: 29px;
+		display: inline-block;
+		height: 100%;
+		position: relative;
+		bottom:0;
+	}
+	h2, form{
+		display: inline-block;
+	}
+	form{
+		.search-bar{
+			width: 400px;
+		}
+	}
+	h2{
+		padding: $padding $padding 0 $padding;
+		a{
+			color: white;
+			text-decoration: none;
+			&:hover{
+				text-decoration: underline;
+			}
+		}
+	}
+}
+
+.warning{
+	border: 1px solid $crimson;
+}
+
+.hover-shadow{
+	box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.6);
+	@include transition(box-shadow, 0.2s, ease-in-out);
+	&:hover{
+		box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
+		@include transition(box-shadow, 0.2s, ease-in-out);
+	}
+}
+
+.clickable{
+	cursor: pointer;
+}

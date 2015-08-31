@@ -1,0 +1,99 @@
+$padding: 20px;
+$margin: 20px;
+
+.float-right{
+	float: right;
+}
+
+.float-left{
+	float: left;
+}
+
+.margin{
+    margin: $margin;   
+}
+
+.no-margin{
+    margin: 0;
+}
+
+.margin-vertical{
+    margin-top: $margin;
+    margin-bottom: $margin;
+}
+
+.margin-horizontal{
+    margin-left: $margin;
+    margin-right: $margin;
+}
+
+.padding{
+    padding: $padding;
+}
+
+.no-padding{
+    padding: 0;
+}
+
+.padding-vertical{
+    padding-top: $padding;
+    padding-bottom: $padding;
+}
+
+.padding-horizontal{
+    padding-left: $padding;
+    padding-right: $padding;
+}
+
+.text-center{
+    text-align: center;
+}
+
+.text-left{
+    text-align: left;
+}
+
+.text-right{
+    text-align: right;
+}
+
+.center-vertical{
+    margin: auto 0 auto 0;
+}
+
+.center-block{
+    display: table;
+    margin: auto;
+}
+
+.full{
+    width: 100%;
+}
+
+.half{
+    width: 50%;
+}
+
+.one-third{
+    width: 33%;
+}
+
+.two-thirds{
+    width: 66%;
+}
+
+.one-quarter{
+    width: 25%;
+}
+
+.three-quarters{
+    width: 75%;
+}
+
+.inline-block{
+    display: inline-block;
+}
+
+.clearfix{
+    @extend %clearfix;
+}
