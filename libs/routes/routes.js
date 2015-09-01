@@ -25,6 +25,11 @@ router.post('/login', passport.authenticate('local-login', {
     failureFlash: true
 }))
 
+router.get('/logout', function(req, res) {
+    req.logout()
+    res.redirect('/')
+})
+
 router.get('/signup', function(req, res) {
     res.render('signup', {message: req.flash('signupMessage')})
 })
@@ -34,5 +39,10 @@ router.post('/signup', passport.authenticate('local-signup', {
     failureRedirect: '/signup',
     failureFlash: true
 }))
+
+router.get('/conta', role.isLoggedIn(), function(req, res) {
+    res.render('conta', {user: req.user})
+})
+
 
 module.exports = router

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <% include partials/head %>
+    <body>
+        <% include partials/basic-header %>
+
+        <section class="card margin clearfix">
+            <h2><%= user.nome %> - @<%= user.username %></h2>
+            <h4><% if (user.verificado) { %>
+                Conta verificada
+                <% } else {  %>
+                Conta não verificada
+                <% } %>
+            </h4>
+            <% if (user.admin || user.moderador) { %>
+            <p>
+                <% if(user.admin) { %>
+                <span>Administrador</span>
+                <% } else if(user.moderador) { %>
+                <span>Moderador</span>
+                <% } %>
+            </p>
+            <% } %>
+            <p>Membro desde <%= user.criado %></p>
+        </section>
+
+        <% include partials/footer %>
+    </body>
+</html>

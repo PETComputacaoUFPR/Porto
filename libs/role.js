@@ -39,6 +39,7 @@ module.exports = {
                 return next()
             }
 
+            req.flash('loginMessage', 'Você precisa estar logado para acessar essa página')
             res.redirect('/login')
         }
     }
