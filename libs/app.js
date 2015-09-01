@@ -6,6 +6,8 @@ var passport = require('passport')
 var methodOverride = require('method-override')
 var cors = require('cors')
 var compression = require('compression')
+var session = require('express-session')
+var flash = require('connect-flash')
 
 var libs = process.cwd() + '/libs/'
 require(libs + 'auth/auth')
@@ -14,34 +16,45 @@ var config = require('./config')
 var log = require('./log')(module)
 var oauth2 = require('./auth/oauth2')
 
-var api = require('./routes/api')
-var usuarios = require('./routes/usuarios')
-var materias = require('./routes/materias')
-var professores = require('./routes/professores')
-var arquivos = require('./routes/arquivos')
+var rotas = require('./routes/routes')
+var api = require('./routes/api/api')
+var usuarios = require('./routes/api/usuarios')
+var materias = require('./routes/api/materias')
+var professores = require('./routes/api/professores')
+var arquivos = require('./routes/api/arquivos')
 
 var app = express()
 
+app.set('json spaces', 2)
+app.set('view engine', 'ejs')
+app.set('views', process.cwd() + '/client/views')
+app.use(express.static('client/public'))
+app.use('/bower_components', express.static('bower_components'))
 app.use(compression({level: 9}))
 app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(methodOverride())
+app.use(session({secret: 'KeepItSecret'}))
 app.use(passport.initialize())
-app.set('json spaces', 2)
+app.use(passport.session())
+app.use(flash())
 
-app.use(express.static('client/public'))
+// Rotas da aplicação
+app.use('/', rotas)
+
+// Pasta pública onde ficam os uploads
 app.use('/uploads', express.static('uploads'))
 
 // Rotas da API REST
 app.use('/api/*', cors())
 app.use('/api/', api)
-app.use('/api/v1/u', usuarios)
-app.use('/api/v1/materias', materias)
-app.use('/api/v1/professores', professores)
-app.use('/api/v1/arquivos', arquivos)
-app.use('/api/v1/oauth/token', oauth2.token)
+app.use('/api/u', usuarios)
+app.use('/api/materias', materias)
+app.use('/api/professores', professores)
+app.use('/api/arquivos', arquivos)
+app.use('/api/oauth/token', oauth2.token)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next){

@@ -242,8 +242,7 @@ footer {
   background-size: contain;
   background-repeat: no-repeat;
   margin-top: 20px;
-  padding-top: 20%;
-  height: 100%; }
+  padding-top: 20%; }
   .index h1 {
     margin: 0;
     font-family: 'Montserrat', sans-serif;
@@ -286,8 +285,7 @@ footer {
 
 .header {
   text-align: left;
-  padding: 0;
-  height: 100%; }
+  padding: 0; }
   .header nav {
     display: inline-block;
     height: 100%;

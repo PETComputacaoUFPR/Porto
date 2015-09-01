@@ -3,7 +3,7 @@ module.exports = {
         return function (req, res, next) {
             console.log(req.params.id)
             if(req.user.admin) {
-                next()
+                return next()
             } else {
                 res.statusCode = 403
                 res.json({error: 'Forbidden'})
@@ -14,7 +14,7 @@ module.exports = {
     isModerador: function() {
         return function (req, res, next) {
             if(req.user.moderador || req.user.admin) {
-                next()
+                return next()
             } else {
                 res.statusCode = 403
                 res.json({error: 'Forbidden'})
@@ -25,11 +25,21 @@ module.exports = {
     isVerificado: function() {
         return function (req, res, next) {
             if(req.user.verificado && !req.user.bloqueado) {
-                next()
+                return next()
             } else {
                 res.statusCode = 403
                 res.json({error: 'Forbidden'})
             }
+        }
+    },
+
+    isLoggedIn: function() {
+        return function(req, res, next) {
+            if(req.isAuthenticated()) {
+                return next()
+            }
+
+            res.redirect('/login')
         }
     }
 }
