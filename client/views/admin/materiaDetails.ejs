@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <% include ../partials/head %>
+    <body>
+        <% include ../partials/admin-header %>
+        <% if (message.length > 0) { %>
+            <div class="card margin"><%= message %></div>
+        <% } %>
+        <section class="page-wrap margin card">
+            <h1><%= materia.codigo %> - <%= materia.nome %></h1>
+            <form method="post">
+                <label for="codigo">Código: </label>
+                <input type="text" name="codigo" value="<%= materia.codigo %>">
+                <br>
+                <label for="nome">Nome: </label>
+                <input type="text" name="nome" value="<%= materia.nome %>">
+                <br>
+                <input type="submit" name="submit" value="Enviar" class="button normal">
+                <a href="/admin/materias" class="button red">Cancelar</a>
+            </form>
+        </section>
+        <% include ../partials/footer %>
+    </body>
+</html>

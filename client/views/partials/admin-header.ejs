@@ -1,0 +1,14 @@
+<header class="header">
+    <h2 class="no-margin float-left">
+        <span class="fa">&#xf13d;</span> <a href="/">Farol - Moderação</a>
+    </h2>
+    <nav class="float-right padding">
+        <a href="/admin/" class="padding">Home</a>
+        <a href="/admin/uploads" class="padding">Uploads</a>
+        <a href="/admin/materias" class="padding">Materias</a>
+        <a href="/admin/professores" class="padding">Professores</a>
+        <% if (user.admin) { %>
+        <a href="/admin/usuarios" class="padding">Usuarios</a>
+        <% } %>
+    </nav>
+</header>

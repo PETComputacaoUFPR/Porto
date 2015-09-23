@@ -86,7 +86,7 @@
   width: 100%; }
 
 .half {
-  width: 50%; }
+  width: 48%; }
 
 .one-third {
   width: 33%; }
@@ -102,6 +102,18 @@
 
 .inline-block {
   display: inline-block; }
+
+.flex {
+  display: flex; }
+
+.no-wrap {
+  flex-wrap: nowrap; }
+
+.space-around {
+  justify-content: space-around; }
+
+.stretch {
+  align-items: stretch; }
 
 .button, .icon-button {
   color: white !important;

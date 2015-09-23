@@ -33,7 +33,7 @@ var Arquivo = new Schema({
         type: String,
         required: true
     },
-    // Aprovado ou pendente
+    // aprovado ou pendente
     status: {
         type: String,
         default: 'pendente'

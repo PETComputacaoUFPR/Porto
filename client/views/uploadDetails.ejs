@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <% include partials/head %>
+    <body>
+        <% include partials/basic-header %>
+
+        <section class="margin page-wrap card">
+            <div class="flex no-wrap space-around stretch">
+                <div class="half">
+                    <img src="<%= arquivo.path %>" style="width:100%">
+                </div>
+                <div>
+                    <h3>Informações</h3>
+                    <%= arquivo.materia %> - <%= arquivo.professor %>
+                    <br>
+                    <% if(arquivo.prova) { %> Prova <% } else { %> Trabalho <% } %>
+                    <%= arquivo.numero %> - <%= arquivo.ano %>/<%= arquivo.semestre %>
+                </div>
+            </div>
+        </section>
+
+        <% include partials/footer %>
+    </body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <% include ../partials/head %>
+    <body>
+        <% include ../partials/admin-header %>
+        <section class="page-wrap">
+            <div class="card card-list margin clearfix">
+                <ul class="list">
+                    <h2 class="list-title">Arquivos pendentes</h2>
+                    <% for(var i=0; i < uploads.length; i++) { %>
+                        <li class="list-item text-left">
+                            <%= uploads[i].tipo %> <%= uploads[i].substitutiva%> <%= uploads[i].numero %> <%= uploads[i].materia %>
+                            <br>Upload feito por <%= uploads[i].usuario.nome%>
+                        </li>
+                    <% } %>
+                    <% if(uploads.length == 0) { %>
+                        <li>
+                            Não há uploads pendentes.
+                        </li>
+                    <% } %>
+                </ul>
+            </div>
+        </section>
+        <% include ../partials/footer %>
+    </body>
+</html>

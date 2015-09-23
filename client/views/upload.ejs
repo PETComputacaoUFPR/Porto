@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <% include partials/head %>
+    <body>
+        <% include partials/basic-header %>
+
+        <section class="card clearfix margin">
+            <h1>Upload</h1>
+            <div>
+                <form method="post" enctype="multipart/form-data">
+                    <input type="file" name="arquivo">
+                    <br>
+                    <input type="text" name="materia" placeholder="Matéria" required>
+                    <br>
+                    <input type="text" name="professor" placeholder="Professor" required>
+                    <br>
+                    <input type="text" name="numero" placeholder="numero">
+                    <br>
+                    <input type="number" name="ano" placeholder="Ano" value="2015">
+                    <br>
+                    <input type="number" name="semestre" placeholder="Semestre" value="1">
+                    <br>
+                    <label for="substitutiva">Substitutiva?</label>
+                    <input type="checkbox" name="substitutiva">
+                    <br>
+                    <label for="provaTrabalho">Prova?</label>
+                    <input type="checkbox" name="provaTrabalho" required>
+                    <br>
+                    <input type="submit" value="Enviar" class="button normal">
+                </form>
+            </div>
+        </section>
+
+        <% include partials/footer %>
+    </body>
+</html>

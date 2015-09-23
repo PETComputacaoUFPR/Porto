@@ -2,15 +2,15 @@ $padding: 20px;
 $margin: 20px;
 
 .float-right{
-	float: right;
+    float: right;
 }
 
 .float-left{
-	float: left;
+    float: left;
 }
 
 .margin{
-    margin: $margin;   
+    margin: $margin;
 }
 
 .no-margin{
@@ -71,7 +71,7 @@ $margin: 20px;
 }
 
 .half{
-    width: 50%;
+    width: 48%;
 }
 
 .one-third{
@@ -96,4 +96,20 @@ $margin: 20px;
 
 .clearfix{
     @extend %clearfix;
+}
+
+.flex{
+    display: flex;
+}
+
+.no-wrap{
+    flex-wrap: nowrap;
+}
+
+.space-around{
+    justify-content: space-around;
+}
+
+.stretch{
+    align-items: stretch;
 }

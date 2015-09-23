@@ -36,11 +36,13 @@ module.exports = {
     isLoggedIn: function() {
         return function(req, res, next) {
             if(req.isAuthenticated()) {
+                delete req.user.hashedPassword
+                delete req.user.salt
                 return next()
             }
 
             req.flash('loginMessage', 'Você precisa estar logado para acessar essa página')
-            res.redirect('/login')
+            res.redirect('/login?url='+req.originalUrl)
         }
     }
 }

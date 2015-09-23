@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <% include ../partials/head %>
+    <body>
+        <% include ../partials/admin-header %>
+        <section class="page-wrap">
+            <div class="card text-left margin">
+                <p><a href="/admin/uploads">
+                    <% if (pendentes == 1) { %>
+                        Existe <%= pendentes %> upload pendente.
+                    <% } else { %>
+                        Existem <%= pendentes %> uploads pendentes.
+                    <% } %>
+                </a></p>
+            </div>
+        </section>
+        <% include ../partials/footer %>
+    </body>
+</html>

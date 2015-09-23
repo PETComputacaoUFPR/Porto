@@ -17,11 +17,14 @@ var log = require('./log')(module)
 var oauth2 = require('./auth/oauth2')
 
 var rotas = require('./routes/routes')
+var admin = require('./routes/admin/admin')
+var materias = require('./routes/admin/materias')
+
 var api = require('./routes/api/api')
-var usuarios = require('./routes/api/usuarios')
-var materias = require('./routes/api/materias')
-var professores = require('./routes/api/professores')
-var arquivos = require('./routes/api/arquivos')
+var usuariosRest = require('./routes/api/usuarios')
+var materiasRest = require('./routes/api/materias')
+var professoresRest = require('./routes/api/professores')
+var arquivosRest = require('./routes/api/arquivos')
 
 var app = express()
 
@@ -43,6 +46,8 @@ app.use(flash())
 
 // Rotas da aplicação
 app.use('/', rotas)
+app.use('/admin', admin)
+app.use('/admin/materias', materias)
 
 // Pasta pública onde ficam os uploads
 app.use('/uploads', express.static('uploads'))
@@ -50,10 +55,10 @@ app.use('/uploads', express.static('uploads'))
 // Rotas da API REST
 app.use('/api/*', cors())
 app.use('/api/', api)
-app.use('/api/u', usuarios)
-app.use('/api/materias', materias)
-app.use('/api/professores', professores)
-app.use('/api/arquivos', arquivos)
+app.use('/api/u', usuariosRest)
+app.use('/api/materias', materiasRest)
+app.use('/api/professores', professoresRest)
+app.use('/api/arquivos', arquivosRest)
 app.use('/api/oauth/token', oauth2.token)
 
 // catch 404 and forward to error handler
@@ -70,6 +75,7 @@ app.use(function(req, res, next){
 app.use(function(err, req, res, next){
     res.status(err.status || 500)
     log.error('%s %d %s', req.method, res.statusCode, err.message)
+    log.error(err)
     res.json({
         error: err.message
     })
