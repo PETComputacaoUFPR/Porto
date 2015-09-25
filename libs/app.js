@@ -19,6 +19,7 @@ var oauth2 = require('./auth/oauth2')
 var rotas = require('./routes/routes')
 var admin = require('./routes/admin/admin')
 var materias = require('./routes/admin/materias')
+var professores = require('./routes/admin/professores')
 
 var api = require('./routes/api/api')
 var usuariosRest = require('./routes/api/usuarios')
@@ -48,6 +49,7 @@ app.use(flash())
 app.use('/', rotas)
 app.use('/admin', admin)
 app.use('/admin/materias', materias)
+app.use('/admin/professores', professores)
 
 // Pasta pública onde ficam os uploads
 app.use('/uploads', express.static('uploads'))

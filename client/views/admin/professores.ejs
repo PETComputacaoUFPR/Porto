@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <% include ../partials/head %>
+    <body>
+        <% include ../partials/admin-header %>
+        <section class="page-wrap">
+            <% if (message.length > 0) { %>
+                <div class="card margin"><%= message %></div>
+            <% } %>
+            <div class="card card-list margin">
+                <ul class="list">
+                    <h2 class="list-title">Professores</h2>
+                    <input type="search" name="filter" class="search-bar margin-vertical two-thirds" placeholder="Busca" />
+                    <li class="list-item text-left">
+                        <span>Novo professor:</span>
+                        <form method="post">
+                            <input type="text" name="nome" ng-model="nome" placeholder="Nome" required/>
+                            <button type="submit" class="button dark hover-shadow float-right">
+                                <i class="fa fa-plus fa-fw"></i>
+                            </button>
+                        </form>
+                    </li>
+                    <% for(var i=0; i < professores.length; i++) { %>
+                    <li class="list-item text-left">
+                        <%= professores[i].nome %>
+                        <div class="float-right">
+                            <a href="/admin/professores/<%= professores[i]._id %>" class="button normal hover-shadow">
+                                <i class="fa fa-edit fa-fw"></i>
+                            </a>
+
+                            <a href="/admin/professores/delete/<%= professores[i]._id %>" class="button red hover-shadow">
+                                <i class="fa fa-close fa-fw"></i>
+                            </a>
+                        </div>
+                    </li>
+                    <% } %>
+                    <% if (professores.length == 0) { %>
+                    <li class="list-item">Não há matérias cadastradas.</li>
+                    <% } %>
+                </ul>
+            </div>
+        </section>
+        <% include ../partials/footer %>
+    </body>
+</html>

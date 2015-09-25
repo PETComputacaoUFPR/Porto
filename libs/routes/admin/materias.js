@@ -11,7 +11,7 @@ router.use(role.isLoggedIn())
 
 router.get('/', function(req, res) {
     Materia.find()
-    .sort([['nome', 'ascending']])
+    .sort([['codigo', 'ascending']])
     .exec(function(err, materias) {
         if(!err) {
             return res.render('admin/materias', {user: req.user, materias: materias, message: req.flash('materiasMessage')})
