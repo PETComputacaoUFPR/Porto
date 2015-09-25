@@ -1,0 +1,80 @@
+.alert{
+    @extend %clearfix;
+    @extend %box-size;
+    border: 1px solid;
+    border-radius: 3px;
+    margin: 10px 0 10px 0;
+    padding: 10px;
+    color: white;
+    .alert-close{
+        padding: 0 5px 0 5px;
+        float: right;
+        &:hover{
+            cursor: pointer;
+        }
+        button{
+            @extend .button-clean;
+        }
+    }
+    .info:before{
+        font-weight: bold;
+    }
+}
+
+.notice{
+    @extend .alert;
+    @extend .light;
+    border-color: darken($aqua, 10%);
+    .alert-close:hover{
+        color: darken($aqua, 10%);
+    }
+    .info:before{
+        content: "Info: ";
+    }
+}
+
+.success{
+    @extend .alert;
+    @extend .normal;
+    border-color: darken($deep-sea, 10%);
+    .alert-close:hover{
+        color: darken($deep-sea, 10%);
+    }
+    .info:before{
+        content: "Sucesso: ";
+    }
+}
+
+.error{
+    @extend .alert;
+    @extend .red;
+    border-color: darken($crimson, 10%);
+    .alert-close:hover{
+        color: darken($crimson, 10%);
+    }
+    .info:before{
+        content: "Erro: ";
+    }
+}
+
+input.warn{
+    border-color: $crimson;
+    color: $nautical;
+    &::-webkit-input-placeholder { /* WebKit browsers */
+        color: $crimson;
+    }
+    &:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+       color: $crimson;
+       opacity:  1;
+    }
+    &::-moz-placeholder { /* Mozilla Firefox 19+ */
+       color: $crimson;
+       opacity:  1;
+    }
+    &:-ms-input-placeholder { /* Internet Explorer 10+ */
+       color: $crimson;
+    }
+    &:focus{
+        border-color: $crimson;
+    }
+}

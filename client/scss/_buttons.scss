@@ -21,7 +21,7 @@
 }
 
 .float-button{
-	position: relative; 
+	position: relative;
 	top: -1.3em;
 }
 
@@ -46,4 +46,19 @@
 
 .button-circle{
 	border-radius: 50%;
+}
+
+.button-clean{
+    border: none;
+    margin: 0;
+    padding: 0;
+    background-color: inherit;
+    color: inherit;
+    &:focus{
+        outline: 0;
+        background-color: inherit;
+    }
+    &:hover{
+        background-color: inherit;
+    }
 }

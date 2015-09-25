@@ -1,0 +1,135 @@
+$input-padding: 10px;
+$input-margin: 3px;
+$border-radius: 2px;
+
+input, .input{
+    vertical-align: middle;
+    margin: $input-margin 0 $input-margin 0;
+    &:focus{
+        outline: 0;
+    }
+    &:disabled{
+        background-color: $gray;
+        border-color: $squid-ink;
+    }
+}
+
+//Class .input no fim, caso eu não tenha coberto algum tipo
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="search"],
+input[type="tel"],
+.input{
+    border: 1px solid $gray;
+    padding: $input-padding;
+    &:focus{
+        border-color: $deep-sea;
+    }
+    &:disabled{
+        border-color: darken($gray, 20%);
+    }
+}
+
+input[type="checkbox"]{
+    visibility: hidden;
+    cursor: pointer;
+    margin-right: 8px;
+    &:before{
+        content: "";
+        display: inline-block;
+        margin-right: 15px;
+        width: 12px;
+        height: 12px;
+        visibility: visible;
+        border: 2px solid darken($gray, 10%);
+        border-radius: $border-radius;
+        line-height: 12px;
+        font-size: 14px;
+        text-align: center;
+        font-weight: bold;
+    }
+    &:checked:before{
+        color: $deep-sea;
+        font-family: FontAwesome;
+        //FontAwesome
+        content: "\f00c";
+        border-color: $deep-sea;
+    }
+    &:hover:not(:checked):before{
+        color: darken($gray, 10%);
+        font-family: FontAwesome;
+        //FontAwesome
+        content: "\f00c";
+    }
+}
+
+input[type="radio"]{
+    visibility: hidden;
+    cursor: pointer;
+    margin-right: 8px;
+    &:before{
+        font-family: FontAwesome;
+        color: $gray;
+        content: "";
+        display: inline-block;
+        margin-right: 15px;
+        width: 11px;
+        height: 11px;
+        border: 2px solid darken($gray, 10%);
+        border-radius:50%;
+        visibility: visible;
+        line-height: 12px;
+        font-size: 14px;
+        text-align: center;
+    }
+    &:checked:before{
+        padding-left: -2px;
+        color: $deep-sea;
+        background-color: $deep-sea;
+    }
+    &:hover:not(:checked):before{
+        background-color: darken($gray, 10%);
+    }
+}
+
+textarea{
+    @extend .input;
+}
+
+fieldset{
+    border: 1px solid darken($gray, 20%);
+    border-radius: $border-radius;
+}
+
+.input-group{
+    margin: 0;
+    border: none;
+    padding: 0;
+    input, textarea{
+        display: block;
+        margin: 0 0 -1px;
+        border-radius: 0;
+        position: relative;
+        top: -1px;
+        &:focus{
+            z-index: 3;
+        }
+        &:first-child{
+            top: 1px;
+            border-radius: $border-radius $border-radius 0 0;
+            margin: 0;
+            &:last-child{
+                top: 1px;
+                border-radius: $border-radius;
+                margin: 0;
+            }
+        }
+        &:last-child{
+            top: -2px;
+            border-radius: 0 0 $border-radius $border-radius;
+            margin: 0;
+        }
+    }
+}
