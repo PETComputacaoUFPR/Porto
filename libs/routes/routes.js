@@ -31,7 +31,7 @@ var upload = multer({storage: storage, fileFilter: fileFilter})
 var fs = require('fs')
 
 var libs = process.cwd() + '/libs/'
-
+var VerificationToken = require(libs + 'model/verificationToken')
 var role = require(libs + 'role')
 
 router.get('/', function(req, res) {
