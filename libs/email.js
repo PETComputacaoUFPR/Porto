@@ -22,7 +22,7 @@ function sendVerifyToUser(usuario, protocol, host) {
             console.log('Não foi possível criar o token')
             return
         }
-        var text = 'Olá, ' + usuario.nome + '. Clique neste link para validar sua conta: ' + protocol + '://' + host + '/v1/u/verify/' + token
+        var text = 'Olá, ' + usuario.nome + '. Clique neste link para validar sua conta: ' + protocol + '://' + host + '/verify/' + token
         var message = {
             from: 'PET Computação UFPR <pet@inf.ufpr.br>',
             to: usuario.nome + ' <' + usuario.email + '>',
