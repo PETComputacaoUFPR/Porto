@@ -6,10 +6,13 @@ var libs = process.cwd() + '/libs/'
 
 var config = require(libs + 'config')
 
+
 var Usuario = require(libs + 'model/usuario')
 var Client = require(libs + 'model/client')
 var AccessToken = require(libs + 'model/accessToken')
 var RefreshToken = require(libs + 'model/refreshToken')
+var email = require(libs + 'email')
+
 
 passport.use(new ClientPasswordStrategy(
     function(clientId, clientSecret, done) {
@@ -107,6 +110,7 @@ passport.use('local-signup', new LocalStrategy({
                         console.log('Internal error: %s', err.message)
                         return done(null, false, req.flash('signupMessage', 'Erro ao salvar o usuário: ' + err.message))
                     }
+                    email.sendVerifyToUser(usuario, req.protocol, req.get('host'))
                     return done(null, usuario)
                 })
             }

@@ -70,6 +70,29 @@ router.post('/signup', passport.authenticate('local-signup', {
     failureFlash: true
 }))
 
+router.get('/verify/:token', function(req, res) {
+    var token = req.params.token
+    var ok = true
+    VerificationToken.findOne({token: token}, function(err, vToken) {
+        if(err) {
+            console.log(err)
+            req.flash('verifyMessage', 'A verificação falhou. Entre em contato com um administrador através do e-mail pet@inf.ufpr.br')
+            ok = false
+        }
+        Usuario.findOne({_id: vToken.userId}, function(err, usuario) {
+            usuario.verificado = true
+            usuario.save(function(err) {
+                if(err) {
+                    console.log(err)
+                    ok = false
+                    req.flash('verifyMessage', 'A verificação falhou. Entre em contato com um administrador através do e-mail pet@inf.ufpr.br')
+                }
+            })
+        })
+        res.render('verify', {message: req.flash('verifyMessage'), ok: ok})
+    })
+})
+
 router.get('/conta', role.isLoggedIn(), function(req, res) {
     res.render('conta', {user: req.user})
 })
