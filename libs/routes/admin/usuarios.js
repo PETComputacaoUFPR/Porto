@@ -45,8 +45,8 @@ router.post('/:id', function(req, res) {
         usuario.nome = req.body.nome
         usuario.username = req.body.username
         usuario.email = req.body.email
-        usuario.admin = req.body.admin
-        usuario.moderador = req.body.moderador
+        usuario.admin = req.body.admin || usuario.admin
+        usuario.moderador = req.body.moderador || usuario.moderador
 
         usuario.save(function(err) {
             if(!err) {
@@ -54,6 +54,7 @@ router.post('/:id', function(req, res) {
                 res.redirect('/admin/usuarios')
             } else {
                 // TODO: redirecionar para 500
+                console.log(err);
                 res.redirect('/')
             }
         })
