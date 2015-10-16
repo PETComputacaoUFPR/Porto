@@ -5,7 +5,29 @@
         <% include ../partials/admin-header %>
         <section class="page-wrap">
             <% if (message.length > 0) { %>
-                <div class="card margin"><%= message %></div>
+                <% if (message.length > 0) { %>
+                    <div class="card margin"><%= message %></div>
+                <% } %>
+                <% if (message == "successDelete") { %>
+                    <script>
+                        swal("Deletada!", "A matéria foi deletada com sucesso.", "success");
+                    </script>
+                <% } %>
+                <% if (message == "successSave") { %>
+                    <script>
+                        swal("Salva!", "A matéria foi criada com sucesso.", "success");
+                    </script>
+                <% } %>
+                <% if (message == "errorSave") { %>
+                    <script>
+                        swal("Erro :(", "Não foi possível salvar a matéria. Tente novamente.", "error");
+                    </script>
+                <% } %>
+                <% if (message == "successEdit") { %>
+                    <script>
+                        swal("Salva!", "A matéria foi editada com sucesso.", "success");
+                    </script>
+                <% } %>
             <% } %>
             <div class="card card-list margin">
                 <ul class="list">
@@ -25,13 +47,13 @@
                     <li class="list-item text-left">
                         <%= materias[i].codigo %> - <%= materias[i].nome %>
                         <div class="float-right">
-                            <a href="/admin/materias/<%= materias[i]._id %>" class="button normal hover-shadow">
+                            <button onclick="location.href='/admin/materias/<%= materias[i]._id %>'" class="button normal hover-shadow">
                                 <i class="fa fa-edit fa-fw"></i>
-                            </a>
-                            
-                            <a href="/admin/materias/delete/<%= materias[i]._id %>" class="button red hover-shadow">
+                            </button>
+
+                            <button onclick="deleteModal('<%= materias[i]._id %>')" class="button red hover-shadow">
                                 <i class="fa fa-close fa-fw"></i>
-                            </a>
+                            </button>
                         </div>
                     </li>
                     <% } %>
@@ -42,5 +64,21 @@
             </div>
         </section>
         <% include ../partials/footer %>
+        <script>
+            function deleteModal(id) {
+                swal({
+                    title: "Você tem certeza?",
+                    text: "Não será possível recuperar a entrada!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Sim, deletar matéria!",
+                    closeOnConfirm: true,
+                    html: false
+                    }, function(){
+                        location.href = '/admin/materias/delete/' + id;
+                });
+            }
+        </script>
     </body>
 </html>

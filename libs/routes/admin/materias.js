@@ -26,9 +26,10 @@ router.post('/', function(req, res) {
 
     materia.save(function(err) {
         if(!err) {
+            req.flash('materiasMessage', 'successSave')
             res.redirect('/admin/materias')
         } else {
-            req.flash('materiasMessage', 'Erro ao salvar a matéria')
+            req.flash('materiasMessage', 'errorSave')
             res.redirect('/admin/materias')
         }
     })
@@ -62,7 +63,7 @@ router.post('/:id', function(req, res) {
 
         materia.save(function(err) {
             if(!err) {
-                req.flash('materiasMessage', 'Matéria salva com sucesso')
+                req.flash('materiasMessage', 'successEdit')
                 res.redirect('/admin/materias')
             } else {
                 // TODO: redirecionar para 500
@@ -78,7 +79,7 @@ router.get('/delete/:id', function(req, res) {
             // TODO: redirecionar para 500
             res.redirect('/')
         }
-        req.flash('materiasMessage', 'Matéria removida com sucesso')
+        req.flash('materiasMessage', 'successDelete')
         res.redirect('/admin/materias')
     })
 })
