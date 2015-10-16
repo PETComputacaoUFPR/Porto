@@ -26,9 +26,10 @@ router.post('/', function(req, res) {
 
     professor.save(function(err) {
         if(!err) {
+            req.flash('professoresMessage', 'successSave')
             res.redirect('/admin/professores')
         } else {
-            req.flash('professoresMessage', 'Erro ao salvar a matéria')
+            req.flash('professoresMessage', 'errorSave')
             res.redirect('/admin/professores')
         }
     })
@@ -62,7 +63,7 @@ router.post('/:id', function(req, res) {
 
         professor.save(function(err) {
             if(!err) {
-                req.flash('professoresMessage', 'Professor salvo com sucesso')
+                req.flash('professoresMessage', 'successEdit')
                 res.redirect('/admin/professores')
             } else {
                 // TODO: redirecionar para 500
@@ -78,7 +79,7 @@ router.get('/delete/:id', function(req, res) {
             // TODO: redirecionar para 500
             res.redirect('/')
         }
-        req.flash('professoresMessage', 'Professor removido com sucesso')
+        req.flash('professoresMessage', 'successDelete')
         res.redirect('/admin/professores')
     })
 })
