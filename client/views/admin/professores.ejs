@@ -5,9 +5,6 @@
         <% include ../partials/admin-header %>
         <section class="page-wrap">
             <% if (message.length > 0) { %>
-                <% if (message.length > 0) { %>
-                    <div class="card margin"><%= message %></div>
-                <% } %>
                 <% if (message == "successDelete") { %>
                     <script>
                         swal("Deletado!", "O professor foi deletado com sucesso.", "success");
