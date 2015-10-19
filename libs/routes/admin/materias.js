@@ -8,6 +8,7 @@ var role = require(libs + 'role')
 var Materia = require(libs + 'model/materia')
 
 router.use(role.isLoggedIn())
+router.use(role.isModerador())
 
 router.get('/', function(req, res) {
     Materia.find()

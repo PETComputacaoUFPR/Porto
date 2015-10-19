@@ -8,6 +8,7 @@ var role = require(libs + 'role')
 var Professor = require(libs + 'model/professor')
 
 router.use(role.isLoggedIn())
+router.use(role.isModerador())
 
 router.get('/', function(req, res) {
     Professor.find()

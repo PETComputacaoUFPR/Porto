@@ -8,6 +8,7 @@ var role = require(libs + 'role')
 var Usuario = require(libs + 'model/usuario')
 
 router.use(role.isLoggedIn())
+router.use(role.isAdmin())
 
 router.get('/', function(req, res) {
     Usuario.find()
