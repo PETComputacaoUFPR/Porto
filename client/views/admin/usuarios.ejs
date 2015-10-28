@@ -36,7 +36,7 @@
                         @<%= usuarios[i].username %> - <%= usuarios[i].nome %>
                         <br>
                         <%= usuarios[i].email %> <% if(usuarios[i].verificado) { %> - Verificado <% } %>
-                        <% if(usuarios[i].moderador && usuarios[i].admin) { %> <br> Moderador <% } %>
+                        <% if(usuarios[i].moderador && !usuarios[i].admin) { %> <br> Moderador <% } %>
                         <% if(usuarios[i].admin) { %> <br> Administrador <% } %>
                         <div class="float-right">
                             <button onclick="location.href='/admin/usuarios/<%= usuarios[i]._id %>'" class="button normal hover-shadow">
