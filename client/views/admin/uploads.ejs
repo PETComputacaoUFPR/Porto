@@ -9,8 +9,25 @@
                     <h2 class="list-title">Arquivos pendentes</h2>
                     <% for(var i=0; i < uploads.length; i++) { %>
                         <li class="list-item text-left">
-                            <%= uploads[i].tipo %> <%= uploads[i].substitutiva%> <%= uploads[i].numero %> <%= uploads[i].materia %>
-                            <br>Upload feito por <%= uploads[i].usuario.nome%>
+                            <%= uploads[i].tipo[0].toUpperCase() + uploads[i].tipo.slice(1) + ' ' + ((uploads[i].substitutiva) ? 'Substitutiva' : '') %>
+                            <%= uploads[i].numero %> de <%= uploads[i].materia.nome %> por <%= uploads[i].professor.nome %>
+                            <br>
+                            <%= uploads[i].ano + '/' + uploads[i].semestre %>
+                            <br>
+                            Upload feito por <%= uploads[i].usuario.nome%> (@<%= uploads[i].usuario.username %>)
+                            <div class="float-right">
+                                <button class="button normal hover-shadow">
+                                    <i class="fa fa-check fa-fw"></i>
+                                </button>
+
+                                <button class="button darker hover-shadow">
+                                    <i class="fa fa-eye fa-fw"></i>
+                                </button>
+
+                                <button class="button red hover-shadow">
+                                    <i class="fa fa-close fa-fw"></i>
+                                </button>
+                            </div>
                         </li>
                     <% } %>
                     <% if(uploads.length == 0) { %>
