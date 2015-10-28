@@ -38,7 +38,7 @@ var Arquivo = new Schema({
         type: String,
         default: 'pendente'
     },
-    // PDF ou image?
+    // PDF ou imagem?
     tipoArquivo: {
         type: String
     },
@@ -50,7 +50,7 @@ var Arquivo = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Professor'
     },
-    // Who uploaded
+    // Quem fez o upload
     usuario: {
         type: Schema.Types.ObjectId,
         ref: 'Usuario'
