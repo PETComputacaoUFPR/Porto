@@ -8,13 +8,14 @@
             <h1>Você acaba de enviar: </h1>
             <div class="flex no-wrap space-around stretch">
                 <div class="half">
-                    <img src="<%= arquivo.path %>" style="width:100%">
+                    <img src="<%= arquivo.arquivo %>" style="width:100%">
                 </div>
                 <div>
                     <h3>Informações</h3>
-                    <%= arquivo.materia %> - <%= arquivo.professor %>
+                    <%= materia %> - <%= professor %>
                     <br>
                     <%= arquivo.tipo[0].toUpperCase() +  arquivo.tipo.slice(1) %>
+                    <%= (arquivo.substitutiva) ? 'Substitutiva' : ''%>
                     <%= arquivo.numero %> - <%= arquivo.ano %>/<%= arquivo.semestre %>
                     <h3>As informações estão corretas?</h3>
                     <a href="/" class="button normal">Confirmar</a>

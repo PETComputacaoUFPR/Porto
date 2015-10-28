@@ -103,54 +103,82 @@ router.get('/conta', role.isLoggedIn(), function(req, res) {
 
 router.get('/upload', role.isLoggedIn(), function(req, res) {
     Materia.find(function(err, materias) {
-        Professor.find(function(err, professores) {
-            res.render('upload', {user: req.user, materias: materias, professores: professores})
-        })
+        if(!err) {
+            Professor.find(function(err, professores) {
+                if(!err) {
+                    res.render('upload', {user: req.user, materias: materias, professores: professores})
+                }
+            })
+        }
     })
 })
 
 router.post('/upload', role.isLoggedIn(), role.isVerificado(), upload.array('arquivo', 1), function(req, res) {
     /*
     No momento é feito o upload de apenas 1 arquivo. Logo esse for é "inútil"
-    Mas, na verdade, este for está já está pensando quando vierem multiplas imagens
     */
-    for(var f in req.files) {
-        file = req.files[f]
-        var arquivo = new Arquivo({
-            nome: file.originalname,
-            tipo: (req.body.provaTrabalho === 'on') ? 'prova' : 'trabalho',
-            numero: req.body.numero || 0,
-            substitutiva: (req.body.substitutiva === 'on'),
-            ano: req.body.ano,
-            semestre: req.body.semestre,
-            arquivo: file.path,
-            status: req.body.status || 'pendente',
-            tipoArquivo: file.mimetype,
-            // TODO: aqui tem que converter o nome/código da máteria e do professor para o _id do mongo
-            materia: req.body.materia,
-            professor: req.body.professor,
-            usuario: req.user.userId
-        })
+   console.log(req.body.materia)
+   console.log(req.body.professor)
+    Materia.find({nome: req.body.materia}).exec(function(err, materia){
+        if(!err) {
+            Professor.find({nome: req.body.professor}).exec(function(err, professor) {
+                if(!err) {
+                    console.log(materia)
+                    console.log(professor)
+                    for(var f in req.files) {
+                        file = req.files[f]
+                        var arquivo = new Arquivo({
+                            nome: file.originalname,
+                            tipo: (req.body.provaTrabalho === 'on') ? 'prova' : 'trabalho',
+                            numero: req.body.numero || 0,
+                            substitutiva: (req.body.substitutiva === 'on'),
+                            ano: req.body.ano,
+                            semestre: req.body.semestre,
+                            arquivo: file.path,
+                            status: req.body.status || 'pendente',
+                            tipoArquivo: file.mimetype,
+                            // TODO: aqui tem que converter o nome/código da máteria e do professor para o _id do mongo
+                            materia: materia[0]._id,
+                            professor: professor[0]._id,
+                            usuario: req.user.userId
+                        })
 
-        arquivo.save(function (err) {
-            if(!err) {
-                console.log(arquivo)
-                res.render('uploadDetails', {user: req.user, arquivo: arquivo})
-            } else {
-                if(err.name === 'ValidationError') {
-                    res.statusCode = 400
-                    res.json({error: 'Validation error'})
-                } else {
-                    res.statusCode = 500
-                    res.json({error:'Server error'})
+                        arquivo.save(function (err) {
+                            if(!err) {
+                                console.log(arquivo)
+                                res.render('uploadDetails', {user: req.user, arquivo: arquivo, materia: materia[0].nome, professor: professor[0].nome})
+                            } else {
+                                if(err.name === 'ValidationError') {
+                                    res.statusCode = 400
+                                    res.json({error: 'Validation error'})
+                                } else {
+                                    res.statusCode = 500
+                                    res.json({error:'Server error'})
+                                }
+                                console.log('Internal error(%d): %s', res.statusCode, err.message)
+                                fs.unlink(file.path, function() {
+                                    if(err) console.log(err)
+                                })
+                            }
+                        })
+                    }
                 }
-                console.log('Internal error(%d): %s', res.statusCode, err.message)
-                fs.unlink(file.path, function() {
-                    if(err) console.log(err)
-                })
-            }
+            })
+        }
+    })
+})
+
+router.get('/upload/cancel/:id', role.isLoggedIn(), role.isVerificado(), function(req, res) {
+    Arquivo.findByIdAndRemove(req.params.id, function(err, arquivo) {
+        if(!arquivo) {
+            res.statusCode = 404
+            return res.json({error: 'Not found'})
+        }
+        fs.unlink(arquivo.arquivo, function() {
+            if(err) console.log(err)
         })
-    }
+        res.redirect('/upload')
+    })
 })
 
 module.exports = router
