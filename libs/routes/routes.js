@@ -33,6 +33,9 @@ var fs = require('fs')
 var libs = process.cwd() + '/libs/'
 var VerificationToken = require(libs + 'model/verificationToken')
 var Usuario = require(libs + 'model/usuario')
+var Arquivo = require(libs + 'model/arquivo')
+var Materia = require(libs + 'model/materia')
+var Professor = require(libs + 'model/professor')
 var role = require(libs + 'role')
 
 router.get('/', function(req, res) {
@@ -99,18 +102,55 @@ router.get('/conta', role.isLoggedIn(), function(req, res) {
 })
 
 router.get('/upload', role.isLoggedIn(), function(req, res) {
-    res.render('upload', {user: req.user})
+    Materia.find(function(err, materias) {
+        Professor.find(function(err, professores) {
+            res.render('upload', {user: req.user, materias: materias, professores: professores})
+        })
+    })
 })
 
 router.post('/upload', role.isLoggedIn(), role.isVerificado(), upload.array('arquivo', 1), function(req, res) {
-    var arquivo = req.files[0]
-    for (var attr in req.body) {
-        arquivo[attr] = req.body[attr]
+    /*
+    No momento é feito o upload de apenas 1 arquivo. Logo esse for é "inútil"
+    Mas, na verdade, este for está já está pensando quando vierem multiplas imagens
+    */
+    for(var f in req.files) {
+        file = req.files[f]
+        var arquivo = new Arquivo({
+            nome: file.originalname,
+            tipo: (req.body.provaTrabalho === 'on') ? 'prova' : 'trabalho',
+            numero: req.body.numero || 0,
+            substitutiva: (req.body.substitutiva === 'on'),
+            ano: req.body.ano,
+            semestre: req.body.semestre,
+            arquivo: file.path,
+            status: req.body.status || 'pendente',
+            tipoArquivo: file.mimetype,
+            // TODO: aqui tem que converter o nome/código da máteria e do professor para o _id do mongo
+            materia: req.body.materia,
+            professor: req.body.professor,
+            usuario: req.user.userId
+        })
+
+        arquivo.save(function (err) {
+            if(!err) {
+                console.log(arquivo)
+                res.render('uploadDetails', {user: req.user, arquivo: arquivo})
+            } else {
+                if(err.name === 'ValidationError') {
+                    res.statusCode = 400
+                    res.json({error: 'Validation error'})
+                } else {
+                    res.statusCode = 500
+                    res.json({error:'Server error'})
+                }
+                console.log('Internal error(%d): %s', res.statusCode, err.message)
+                fs.unlink(file.path, function() {
+                    if(err) console.log(err)
+                })
+            }
+        })
     }
-    arquivo.provaTrabalho = (arquivo.provaTrabalho === 'on')
-    arquivo.substitutiva = (arquivo.substitutiva === 'on')
-    console.log(arquivo)
-    res.render('uploadDetails', {user: req.user, arquivo: arquivo})
 })
 
 module.exports = router

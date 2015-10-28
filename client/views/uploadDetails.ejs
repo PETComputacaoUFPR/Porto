@@ -5,6 +5,7 @@
         <% include partials/basic-header %>
 
         <section class="margin page-wrap card">
+            <h1>Você acaba de enviar: </h1>
             <div class="flex no-wrap space-around stretch">
                 <div class="half">
                     <img src="<%= arquivo.path %>" style="width:100%">
@@ -13,8 +14,11 @@
                     <h3>Informações</h3>
                     <%= arquivo.materia %> - <%= arquivo.professor %>
                     <br>
-                    <% if(arquivo.prova) { %> Prova <% } else { %> Trabalho <% } %>
+                    <%= arquivo.tipo[0].toUpperCase() +  arquivo.tipo.slice(1) %>
                     <%= arquivo.numero %> - <%= arquivo.ano %>/<%= arquivo.semestre %>
+                    <h3>As informações estão corretas?</h3>
+                    <a href="/" class="button normal">Confirmar</a>
+                    <a href="/upload/cancel/<%= arquivo._id %>" class="button red">Cancelar</a>
                 </div>
             </div>
         </section>
