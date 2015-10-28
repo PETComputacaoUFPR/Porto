@@ -27,10 +27,18 @@ router.post('/', function(req, res) {
 
     professor.save(function(err) {
         if(!err) {
-            req.flash('professoresMessage', 'successSave')
+            req.flash('professoresMessage', JSON.stringify({
+                title: 'Salvo!',
+                message: 'O professor foi salvo com sucesso.',
+                type: 'success'
+            }))
             res.redirect('/admin/professores')
         } else {
-            req.flash('professoresMessage', 'errorSave')
+            req.flash('professoresMessage', JSON.stringify({
+                title: 'Erro!',
+                message: 'Houve um erro ao salvar o professor. Tente novamente ou contate um adminsitrador.',
+                type: 'error'
+            }))
             res.redirect('/admin/professores')
         }
     })
@@ -64,7 +72,11 @@ router.post('/:id', function(req, res) {
 
         professor.save(function(err) {
             if(!err) {
-                req.flash('professoresMessage', 'successEdit')
+                req.flash('professoresMessage', JSON.stringify({
+                    title: 'Alterado!',
+                    message: 'O professor foi editado com sucesso.',
+                    type: 'success'
+                }))
                 res.redirect('/admin/professores')
             } else {
                 // TODO: redirecionar para 500
@@ -80,7 +92,11 @@ router.get('/delete/:id', function(req, res) {
             // TODO: redirecionar para 500
             res.redirect('/')
         }
-        req.flash('professoresMessage', 'successDelete')
+        req.flash('professoresMessage', JSON.stringify({
+            title: 'Removido!',
+            message: 'O(a) professor(a) ' + professor.nome + ' foi removido(a) com sucesso.',
+            type: 'success'
+        }))
         res.redirect('/admin/professores')
     })
 })

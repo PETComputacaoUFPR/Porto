@@ -27,10 +27,18 @@ router.post('/', function(req, res) {
 
     materia.save(function(err) {
         if(!err) {
-            req.flash('materiasMessage', 'successSave')
+            req.flash('materiasMessage', JSON.stringify({
+                title: 'Salva!',
+                message: 'A matéria foi criada com sucesso',
+                type: 'success'
+            }))
             res.redirect('/admin/materias')
         } else {
-            req.flash('materiasMessage', 'errorSave')
+            req.flash('materiasMessage', JSON.stringify({
+                title: 'Erro!',
+                message: 'Houve um erro ao salvar a matéria. Tente novamente ou contate um administrador.',
+                type: 'error'
+            }))
             res.redirect('/admin/materias')
         }
     })
@@ -64,11 +72,19 @@ router.post('/:id', function(req, res) {
 
         materia.save(function(err) {
             if(!err) {
-                req.flash('materiasMessage', 'successEdit')
+                req.flash('materiasMessage', JSON.stringify({
+                    title: 'Alterado!',
+                    message: 'A matéria foi alterada com sucesso',
+                    type: 'success'
+                }))
                 res.redirect('/admin/materias')
             } else {
-                // TODO: redirecionar para 500
-                res.redirect('/')
+                req.flash('materiasMessage', JSON.stringify({
+                    title: 'Erro!',
+                    message: 'Houve um erro ao editar a matéria. Tente novamente ou contate um administrador.',
+                    type: 'error'
+                }))
+                res.redirect('/admin/materias')
             }
         })
     })
@@ -80,7 +96,11 @@ router.get('/delete/:id', function(req, res) {
             // TODO: redirecionar para 500
             res.redirect('/')
         }
-        req.flash('materiasMessage', 'successDelete')
+        req.flash('materiasMessage', JSON.stringify({
+            title: 'Deletada!',
+            message: 'A matéria ' + materia.nome + ' foi deletada.',
+            type: 'success'
+        }))
         res.redirect('/admin/materias')
     })
 })

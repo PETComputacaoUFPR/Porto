@@ -4,27 +4,10 @@
     <body>
         <% include ../partials/admin-header %>
         <section class="page-wrap">
-            <% if (message.length > 0) { %>
-                <% if (message == "successDelete") { %>
-                    <script>
-                        swal("Deletado!", "O professor foi deletado com sucesso.", "success");
-                    </script>
-                <% } %>
-                <% if (message == "successSave") { %>
-                    <script>
-                        swal("Salvo!", "O professor foi criado com sucesso.", "success");
-                    </script>
-                <% } %>
-                <% if (message == "errorSave") { %>
-                    <script>
-                        swal("Erro :(", "Não foi possível salvar o professor. Tente novamente.", "error");
-                    </script>
-                <% } %>
-                <% if (message == "successEdit") { %>
-                    <script>
-                        swal("Salvo!", "O professor foi editado com sucesso.", "success");
-                    </script>
-                <% } %>
+            <% if (message.length > 0) { message = JSON.parse(message); %>
+                <script>
+                    swal("<%= message.title %>", "<%= message.message %>", "<%= message.type %>");
+                </script>
             <% } %>
             <div class="card card-list margin">
                 <ul class="list">
