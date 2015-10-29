@@ -2,6 +2,11 @@
 <html>
     <% include partials/head %>
     <body>
+        <% if (message.length > 0) { message = JSON.parse(message); %>
+            <script>
+                swal('<%= message.title %>', '<%= message.message %>', '<%= message.type %>');
+            </script>
+        <% } %>
         <% include partials/basic-header %>
         <section class="card clearfix margin">
             <h1>Upload</h1>

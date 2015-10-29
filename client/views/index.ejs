@@ -1,6 +1,11 @@
 <html>
 <% include partials/head %>
 <body>
+    <% if (message.length > 0) { message = JSON.parse(message); %>
+        <script>
+            swal('<%= message.title %>', '<%= message.message %>', '<%= message.type %>');
+        </script>
+    <% } %>
     <div class="page-wrap">
         <div class="clearfix padding-horizontal">
             <div class="float-right">

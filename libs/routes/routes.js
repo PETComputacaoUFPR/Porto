@@ -44,7 +44,7 @@ router.get('/', function(req, res) {
         delete user.hashedPassword
         delete user.salt
     }
-    res.render('index', {user: user})
+    res.render('index', {user: user, message: req.flash('indexMessage')})
 })
 
 router.get('/login', function(req, res) {
@@ -106,7 +106,7 @@ router.get('/upload', role.isLoggedIn(), function(req, res) {
         if(!err) {
             Professor.find(function(err, professores) {
                 if(!err) {
-                    res.render('upload', {user: req.user, materias: materias, professores: professores})
+                    res.render('upload', {user: req.user, materias: materias, professores: professores, message: req.flash('uploadMessage')})
                 }
             })
         }
@@ -177,6 +177,11 @@ router.get('/upload/cancel/:id', role.isLoggedIn(), role.isVerificado(), functio
         fs.unlink(arquivo.arquivo, function() {
             if(err) console.log(err)
         })
+        req.flash('uploadMessage', JSON.stringify({
+            title: 'Cancelado',
+            message: 'O upload do arquivo foi cancelado',
+            type: 'info'
+        }))
         res.redirect('/upload')
     })
 })
