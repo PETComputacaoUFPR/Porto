@@ -1,0 +1,12 @@
+{
+  "name":"Porto",
+  "scripts":{},
+  "env":{
+    "EMAILPASSWORD":{
+      "required":true
+    }
+  },
+  "addons":[
+    "mongolab"
+  ]
+}
