@@ -387,6 +387,43 @@ input.warn {
   input.warn:focus {
     border-color: #EE3437; }
 
+[tooltip] {
+  position: relative;
+  z-index: 2;
+  cursor: pointer; }
+  [tooltip]:before, [tooltip]:after {
+    visibility: hidden;
+    opacity: 0; }
+  [tooltip]:before {
+    position: absolute;
+    bottom: 120%;
+    left: 50%;
+    margin-bottom: 5px;
+    margin-left: -80px;
+    padding: 7px;
+    width: 160px;
+    border-radius: 3px;
+    background-color: #1a1a1a;
+    color: #F5F5F5;
+    content: attr(tooltip);
+    text-align: center;
+    font-size: 14px; }
+  [tooltip]:after {
+    position: absolute;
+    bottom: 120%;
+    left: 50%;
+    margin-left: -5px;
+    width: 0;
+    border-top: 5px solid #1a1a1a;
+    border-right: 5px solid transparent;
+    border-left: 5px solid transparent;
+    content: " ";
+    font-size: 0;
+    line-height: 0; }
+  [tooltip]:hover:before, [tooltip]:hover:after {
+    visibility: visible;
+    opacity: 1; }
+
 html {
   min-height: 100%;
   position: relative; }

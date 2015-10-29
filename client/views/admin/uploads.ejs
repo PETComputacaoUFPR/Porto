@@ -6,26 +6,39 @@
         <section class="page-wrap">
             <div class="card card-list margin clearfix">
                 <ul class="list">
-                    <h2 class="list-title">Arquivos pendentes</h2>
+                    <li class="list-item text-left">
+                        <h2 class="float-left">Arquivos pendentes</h2>
+                        <div class="float-right">
+                            <button class="button normal hover-shadow">
+                                Aprovar todos<i class="fa fa-check fa-fw"></i>
+                            </button>
+
+                            <button class="button red hover-shadow">
+                                Reprovar todos<i class="fa fa-close fa-fw"></i>
+                            </button>
+                        </div>
+                    </li>
                     <% for(var i=0; i < uploads.length; i++) { %>
                         <li class="list-item text-left">
-                            <%= uploads[i].tipo[0].toUpperCase() + uploads[i].tipo.slice(1) + ' ' + ((uploads[i].substitutiva) ? 'Substitutiva' : '') %>
-                            <%= uploads[i].numero %> de <%= uploads[i].materia.nome %> por <%= uploads[i].professor.nome %>
-                            <br>
-                            <%= uploads[i].ano + '/' + uploads[i].semestre %>
-                            <br>
-                            Upload feito por <%= uploads[i].usuario.nome%> (@<%= uploads[i].usuario.username %>)
+                            <div class="float-left">
+                                <%= uploads[i].tipo[0].toUpperCase() + uploads[i].tipo.slice(1) + ' ' + ((uploads[i].substitutiva) ? 'Substitutiva' : '') %>
+                                <%= uploads[i].numero %> de <%= uploads[i].materia.nome %> por <%= uploads[i].professor.nome %>
+                                <br>
+                                <%= uploads[i].ano + '/' + uploads[i].semestre %>
+                                <br>
+                                Upload feito por <%= uploads[i].usuario.nome%> (@<%= uploads[i].usuario.username %>)
+                            </div>
                             <div class="float-right">
                                 <button class="button normal hover-shadow">
-                                    <i class="fa fa-check fa-fw"></i>
+                                    Aprovar<i class="fa fa-check fa-fw"></i>
                                 </button>
 
                                 <button class="button darker hover-shadow">
-                                    <i class="fa fa-eye fa-fw"></i>
+                                    Visualizar e editar<i class="fa fa-eye fa-fw"></i>
                                 </button>
 
                                 <button class="button red hover-shadow">
-                                    <i class="fa fa-close fa-fw"></i>
+                                    Reprovar<i class="fa fa-close fa-fw"></i>
                                 </button>
                             </div>
                         </li>
