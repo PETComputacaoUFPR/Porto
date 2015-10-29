@@ -5,7 +5,7 @@
   "description": "API RESTful para o Farol",
   "private": true,
   "scripts": {
-    "start": "node generateData.js && node server.js",
+    "start": "bower install; node generateData.js && node server.js",
     "configure": "node generateData.js"
   },
   "dependencies": {
