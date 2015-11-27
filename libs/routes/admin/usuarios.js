@@ -50,6 +50,7 @@ router.post('/:id', function(req, res) {
         usuario.email = req.body.email
         usuario.admin = (req.body.admin) ? true : false
         usuario.moderador = (req.body.moderador) ? true : false
+        usuario.verificado = (req.body.verificado) ? true : false
 
         usuario.save(function(err) {
             if(!err) {

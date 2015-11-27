@@ -24,6 +24,9 @@
                 <label for="moderador">Moderador: </label>
                 <input type="checkbox" name="moderador" <%= (usuario.moderador) ? 'checked' : '' %> >
                 <br>
+                <label for="verificado">Verificado: </label>
+                <input type="checkbox" name="verificado" <%= (usuario.verificado) ? 'checked' : '' %> >
+                <br>
                 <input type="submit" name="submit" value="Enviar" class="button normal">
                 <a href="/admin/usuarios" class="button red">Cancelar</a>
             </form>
