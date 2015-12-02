@@ -54,6 +54,11 @@ var Arquivo = new Schema({
     usuario: {
         type: Schema.Types.ObjectId,
         ref: 'Usuario'
+    },
+    // Quem aprovou o upload
+    moderador: {
+        type: Schema.Types.ObjectId,
+        ref: 'Usuario'
     }
 })
 
