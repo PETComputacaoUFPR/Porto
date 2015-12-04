@@ -3,6 +3,12 @@
     <% include partials/head %>
     <body>
         <% include partials/basic-header %>
+        
+        <% if (message.length > 0) { message = JSON.parse(message); %>
+            <script>
+                swal('<%= message.title %>', '<%= message.message %>', '<%= message.type %>');
+            </script>
+        <% } %>
 
         <section class="card margin clearfix">
             <h2><%= user.nome %> - @<%= user.username %></h2>
@@ -22,6 +28,14 @@
             </p>
             <% } %>
             <p>Membro desde <%= user.criado %></p>
+            <form method="post">
+                <input type="password" placeholder="Senha atual" name="oldpassword" required>
+                <br>
+                <input type="password" placeholder="Nova senha" name="newpassword" required>
+                <br>
+                <button class="button normal" type="submit">Alterar senha</button>
+                <br>
+            </form>
         </section>
 
         <% include partials/footer %>

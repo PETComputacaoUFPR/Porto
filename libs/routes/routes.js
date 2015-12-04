@@ -38,6 +38,8 @@ var Materia = require(libs + 'model/materia')
 var Professor = require(libs + 'model/professor')
 var role = require(libs + 'role')
 
+var log = require(libs + 'log')(module)
+
 router.get('/', function(req, res) {
     var user = req.user
     if(user) {
@@ -79,7 +81,7 @@ router.get('/verify/:token', function(req, res) {
     var ok = true
     VerificationToken.findOne({token: token}, function(err, vToken) {
         if(err) {
-            console.log(err)
+            log.error(err)
             req.flash('verifyMessage', 'A verificação falhou. Entre em contato com um administrador através do e-mail pet@inf.ufpr.br')
             ok = false
         }
@@ -87,7 +89,7 @@ router.get('/verify/:token', function(req, res) {
             usuario.verificado = true
             usuario.save(function(err) {
                 if(err) {
-                    console.log(err)
+                    log.error(err)
                     ok = false
                     req.flash('verifyMessage', 'A verificação falhou. Entre em contato com um administrador através do e-mail pet@inf.ufpr.br')
                 }
@@ -98,7 +100,62 @@ router.get('/verify/:token', function(req, res) {
 })
 
 router.get('/conta', role.isLoggedIn(), function(req, res) {
-    res.render('conta', {user: req.user})
+    res.render('conta', {user: req.user, message: req.flash('updatePassword')})
+})
+
+router.post('/conta', role.isLoggedIn(), function(req, res) {
+    Usuario.findOne({_id: req.user._id}, function(err, usuario) {
+        if(!usuario) {
+            // TODO: 404
+            req.flash('updatePassword', JSON.stringify({
+                title: 'Ops!',
+                message: 'Não foi possível alterar sua senha. ' + err,
+                type: 'error'
+            }))
+            res.redirect('/conta')
+        }
+        
+        if(!err) {
+            if(usuario.checkPassword(req.body.oldpassword)) {
+                usuario.password = req.body.newpassword
+                usuario.save(function(err) {
+                    if(!err) {
+                        req.flash('updatePassword', JSON.stringify({
+                            title: 'Alterada!',
+                            message: 'Sua senha foi alterada com sucesso.',
+                            type: 'success'
+                        }))
+                        res.redirect('/conta')
+                    } else {
+                        //TODO: 500
+                        req.flash('updatePassword', JSON.stringify({
+                            title: 'Ops!',
+                            message: 'Não foi possível alterar sua senha. ' + err,
+                            type: 'error'
+                        }))
+                        log.error(err)
+                        res.redirect('/conta')
+                    }
+                })
+            } else {
+                req.flash('updatePassword', JSON.stringify({
+                    title: 'Ops!',
+                    message: 'Não foi possível alterar sua senha. ' + err,
+                    type: 'error'
+                }))
+                res.redirect('/conta')
+            }
+        } else {
+            log.error(err)
+            //TODO: 500
+            req.flash('updatePassword', JSON.stringify({
+                title: 'Ops!',
+                message: 'Não foi possível alterar sua senha. ' + err,
+                type: 'error'
+            }))
+            res.redirect('/conta')
+        }
+    })
 })
 
 router.get('/upload', role.isLoggedIn(), function(req, res) {
@@ -123,8 +180,8 @@ router.post('/upload', role.isLoggedIn(), role.isVerificado(), upload.array('arq
         if(!err) {
             Professor.find({nome: req.body.professor}).exec(function(err, professor) {
                 if(!err) {
-                    console.log(materia)
-                    console.log(professor)
+                    log.debug(materia)
+                    log.debug(professor)
                     for(var f in req.files) {
                         file = req.files[f]
                         var arquivo = new Arquivo({
@@ -145,7 +202,7 @@ router.post('/upload', role.isLoggedIn(), role.isVerificado(), upload.array('arq
 
                         arquivo.save(function (err) {
                             if(!err) {
-                                console.log(arquivo)
+                                log.debug(arquivo)
                                 res.render('uploadDetails', {user: req.user, arquivo: arquivo, materia: materia[0].nome, professor: professor[0].nome})
                             } else {
                                 if(err.name === 'ValidationError') {
@@ -157,7 +214,7 @@ router.post('/upload', role.isLoggedIn(), role.isVerificado(), upload.array('arq
                                 }
                                 console.log('Internal error(%d): %s', res.statusCode, err.message)
                                 fs.unlink(file.path, function() {
-                                    if(err) console.log(err)
+                                    if(err) log.error(err)
                                 })
                             }
                         })
@@ -175,7 +232,7 @@ router.get('/upload/cancel/:id', role.isLoggedIn(), role.isVerificado(), functio
             return res.json({error: 'Not found'})
         }
         fs.unlink(arquivo.arquivo, function() {
-            if(err) console.log(err)
+            if(err) log.error(err)
         })
         req.flash('uploadMessage', JSON.stringify({
             title: 'Cancelado',
