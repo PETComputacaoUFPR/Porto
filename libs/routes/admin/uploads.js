@@ -12,7 +12,7 @@ var Materia = require(libs + 'model/materia')
 router.use(role.isLoggedIn())
 router.use(role.isModerador())
 
-router.get('/uploads', function(req, res) {
+router.get('/', function(req, res) {
     Arquivo.find({status: 'pendente'})
         .populate('materia')
         .populate('professor')
