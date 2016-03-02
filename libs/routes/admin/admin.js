@@ -22,19 +22,4 @@ router.get('/', function(req, res) {
     })
 })
 
-
-router.get('/uploads', function(req, res) {
-    Arquivo.find({status: 'pendente'})
-        .populate('materia')
-        .populate('professor')
-        .populate('usuario')
-        .exec(function(err, arquivos) {
-            if(!err) {
-                return res.render('admin/uploads', {user: req.user , uploads: arquivos})
-            } else {
-                // TODO: redirecionar para página de erro
-            }
-        })
-})
-
 module.exports = router
