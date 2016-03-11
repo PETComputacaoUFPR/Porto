@@ -4,6 +4,11 @@
     <body>
         <% include ../partials/admin-header %>
         <section class="page-wrap">
+            <% if (message.length > 0) { message = JSON.parse(message); %>
+                <script>
+                    swal('<%= message.title %>', '<%= message.message %>', '<%= message.type %>');
+                </script>
+            <% } %>
             <div class="card card-list margin clearfix">
                 <ul class="list">
                     <li class="list-item text-left">
@@ -29,15 +34,15 @@
                                 Upload feito por <%= uploads[i].usuario.nome%> (@<%= uploads[i].usuario.username %>)
                             </div>
                             <div class="float-right">
-                                <button class="button normal hover-shadow">
+                                <button onclick="location.href='/admin/uploads/aprovar/<%= uploads[i]._id %>'" class="button normal hover-shadow">
                                     Aprovar<i class="fa fa-check fa-fw"></i>
                                 </button>
 
-                                <button class="button darker hover-shadow">
+                                <button onclick="location.href='/admin/uploads/<%= uploads[i]._id %>'" class="button darker hover-shadow">
                                     Visualizar e editar<i class="fa fa-eye fa-fw"></i>
                                 </button>
 
-                                <button class="button red hover-shadow">
+                                <button onclick="location.href='/admin/uploads/reprovar/<%= uploads[i]._id %>'" class="button red hover-shadow">
                                     Reprovar<i class="fa fa-close fa-fw"></i>
                                 </button>
                             </div>
