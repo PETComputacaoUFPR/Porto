@@ -1,0 +1,64 @@
+.button{
+    color: white !important;
+	border: none;
+	border-radius: 2px;
+	font-size: 110%;
+	padding: 5px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	@include transition(background-color, 0.2s, ease);
+	&:hover{
+		cursor: pointer;
+		text-decoration: none;
+	}
+	&:active{
+		@extend .light;
+		@include transition(background-color, 0.2s, ease-out);
+	}
+	&:focus{
+		outline: 0;
+	}
+}
+
+.float-button{
+	position: relative;
+	top: -1.3em;
+}
+
+.icon-button{
+    @extend .button;
+    border-radius: 0;
+	font-family: FontAwesome;
+	font-size: $font-size + 0.2em;
+	position: relative;
+	top: 1.5px;
+	left: -6px;
+	color: white;
+	padding: 6px;
+	@include transition(background-color, 0.2s, ease-in-out);
+
+	/*&:hover{
+		@extend .light;
+		color: $nautical !important;
+		@include transition(all, 0.2s, ease-in-out);
+	}*/
+}
+
+.button-circle{
+	border-radius: 50%;
+}
+
+.button-clean{
+    border: none;
+    margin: 0;
+    padding: 0;
+    background-color: inherit;
+    color: inherit;
+    &:focus{
+        outline: 0;
+        background-color: inherit;
+    }
+    &:hover{
+        background-color: inherit;
+    }
+}

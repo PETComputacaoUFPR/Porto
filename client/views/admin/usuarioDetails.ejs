@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <% include ../partials/head %>
+    <body>
+        <% include ../partials/admin-header %>
+        <% if (message.length > 0) { %>
+            <div class="card margin"><%= message %></div>
+        <% } %>
+        <section class="page-wrap margin card">
+            <h1><%= usuario.nome %></h1>
+            <form method="post">
+                <label for="nome">Nome: </label>
+                <input type="text" name="nome" value="<%= usuario.nome %>">
+                <br>
+                <label for="nome">Username: </label>
+                <input type="text" name="username" value="<%= usuario.username %>">
+                <br>
+                <label for="nome">E-mail: </label>
+                <input type="text" name="email" value="<%= usuario.email %>">
+                <br>
+                <label for="admin">Administrador: </label>
+                <input type="checkbox" name="admin" <%= (usuario.admin) ? 'checked' : '' %> >
+                <br>
+                <label for="moderador">Moderador: </label>
+                <input type="checkbox" name="moderador" <%= (usuario.moderador) ? 'checked' : '' %> >
+                <br>
+                <label for="verificado">Verificado: </label>
+                <input type="checkbox" name="verificado" <%= (usuario.verificado) ? 'checked' : '' %> >
+                <br>
+                <input type="submit" name="submit" value="Enviar" class="button normal">
+                <a href="/admin/usuarios" class="button red">Cancelar</a>
+            </form>
+        </section>
+        <% include ../partials/footer %>
+    </body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <% include partials/head %>
+    <body>
+        <% if (message.length > 0) { message = JSON.parse(message); %>
+            <script>
+                swal('<%= message.title %>', '<%= message.message %>', '<%= message.type %>');
+            </script>
+        <% } %>
+        <% include partials/basic-header %>
+        <section class="card clearfix margin">
+            <h1>Upload</h1>
+            <div>
+                <form method="post" enctype="multipart/form-data">
+                    <input type="file" name="arquivo">
+                    <br>
+                    <input type="text" name="materia" placeholder="Matéria" class="awesomplete" required
+                        data-list="<% for(var i=0; i < materias.length-1; i++) { %> <%= materias[i].nome+',' %> <% } %> <%= materias[materias.length-1].nome%>">
+                    <br>
+                    <input type="text" name="professor" placeholder="Professor" class="awesomplete" required
+                        data-list="<% for(var i=0; i < professores.length-1; i++) { %> <%= professores[i].nome+',' %> <% } %> <%= professores[professores.length-1].nome%>">
+                    <br>
+                    <input type="text" name="numero" placeholder="numero">
+                    <br>
+                    <input type="number" name="ano" placeholder="Ano" value="2015">
+                    <br>
+                    <input type="number" name="semestre" placeholder="Semestre" value="1">
+                    <br>
+                    <label for="substitutiva">Substitutiva?</label>
+                    <input type="checkbox" name="substitutiva">
+                    <br>
+                    <label for="provaTrabalho">Prova?</label>
+                    <input type="checkbox" name="provaTrabalho">
+                    <br>
+                    <input type="submit" value="Enviar" class="button normal">
+                </form>
+            </div>
+        </section>
+
+        <% include partials/footer %>
+    </body>
+</html>

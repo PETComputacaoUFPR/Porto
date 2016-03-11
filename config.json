@@ -25,7 +25,8 @@
         },
         "email": {
             "user": "petcomputacaoufpr",
-            "password": ""
+            "password": "",
+            "host": "smtp.gmail.com"
         }
     }
 }

@@ -1,0 +1,16 @@
+.card{
+    @extend %box-size;
+    padding: $padding;
+    box-shadow:0 1px 2px #aaa;
+    background: white;
+    margin-bottom: $margin;
+    //border-radius: 3px;
+    
+    & > &{
+        box-shadow:0 2px 5px #aaa;
+    }
+}
+
+.card-list{
+    padding: 0;
+}

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <% include ../partials/head %>
+    <body>
+        <% include ../partials/admin-header %>
+        <section class="page-wrap">
+            <% if (message.length > 0) { message = JSON.parse(message); %>
+                <script>
+                    swal('<%= message.title %>', '<%= message.message %>', '<%= message.type %>');
+                </script>
+            <% } %>
+            <div class="card card-list margin">
+                <ul class="list">
+                    <h2 class="list-title">Matérias</h2>
+                    <input type="search" name="filter" class="search-bar margin-vertical two-thirds" placeholder="Busca" />
+                    <li class="list-item text-left">
+                        <span>Nova matéria:</span>
+                        <form method="post">
+                            <input type="text" name="codigo" ng-model="codigo" placeholder="Código" required/>
+                            <input type="text" name="nome" ng-model="nome" placeholder="Nome" required/>
+                            <button type="submit" class="button dark hover-shadow float-right">
+                                <i class="fa fa-plus fa-fw"></i>
+                            </button>
+                        </form>
+                    </li>
+                    <% for(var i=0; i < materias.length; i++) { %>
+                    <li class="list-item text-left">
+                        <%= materias[i].codigo %> - <%= materias[i].nome %>
+                        <div class="float-right">
+                            <button onclick="location.href='/admin/materias/<%= materias[i]._id %>'" class="button normal hover-shadow">
+                                <i class="fa fa-edit fa-fw"></i>
+                            </button>
+
+                            <button onclick="deleteModal('<%= materias[i]._id %>')" class="button red hover-shadow">
+                                <i class="fa fa-close fa-fw"></i>
+                            </button>
+                        </div>
+                    </li>
+                    <% } %>
+                    <% if (materias.length == 0) { %>
+                    <li class="list-item">Não há matérias cadastradas.</li>
+                    <% } %>
+                </ul>
+            </div>
+        </section>
+        <% include ../partials/footer %>
+        <script>
+            function deleteModal(id) {
+                swal({
+                    title: "Você tem certeza?",
+                    text: "Não será possível recuperar a matéria!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Sim, deletar matéria!",
+                    closeOnConfirm: true,
+                    html: false
+                    }, function(){
+                        location.href = '/admin/materias/delete/' + id;
+                });
+            }
+        </script>
+    </body>
+</html>

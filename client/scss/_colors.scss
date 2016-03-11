@@ -1,0 +1,40 @@
+//Paleta de cores
+$crimson:#EE3437;//#cd1e3d;
+$nautical: #1E2251; //#354069;
+$deep-sea:#39628d;
+$aqua:#bfdede;
+$gray:#808080;
+$light-gray: #F5F5F5;
+$squid-ink:#1a1a1a;
+
+.normal{
+    background-color: $deep-sea;
+}
+
+.dark{
+    background-color: $nautical;
+}
+
+.darker{
+    background-color: $squid-ink;
+}
+
+.light{
+    background-color: $aqua;
+}
+
+.lighter{
+    background-color: $light-gray;
+}
+
+.red{
+    background-color: $crimson;
+}
+
+.error{
+    background-color: $crimson !important;
+}
+
+.inactive{
+    background-color: $gray;
+}

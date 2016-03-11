@@ -6,10 +6,13 @@ var libs = process.cwd() + '/libs/'
 
 var config = require(libs + 'config')
 
+
 var Usuario = require(libs + 'model/usuario')
 var Client = require(libs + 'model/client')
 var AccessToken = require(libs + 'model/accessToken')
 var RefreshToken = require(libs + 'model/refreshToken')
+var email = require(libs + 'email')
+
 
 passport.use(new ClientPasswordStrategy(
     function(clientId, clientSecret, done) {
@@ -70,3 +73,65 @@ passport.use(new BearerStrategy(
         })
     }
 ))
+
+var LocalStrategy = require('passport-local').Strategy
+
+passport.serializeUser(function(user, done) {
+    done(null, user.id)
+})
+
+passport.deserializeUser(function(id, done) {
+    Usuario.findById(id, function(err, user) {
+        done(err, user)
+    })
+})
+
+passport.use('local-signup', new LocalStrategy({
+    passReqToCallback: true
+}, function(req, username, password, done) {
+    process.nextTick(function() {
+        Usuario.findOne({'username': username}, function(err, user) {
+            if(err) {
+                return done(err)
+            }
+
+            if(user) {
+                return done(null, false, req.flash('signupMessage', 'Este usuario já existe'))
+            } else {
+                var usuario = new Usuario()
+                console.log(req.body)
+                usuario.nome = req.body.nome
+                usuario.email = req.body.email
+                usuario.username = username
+                usuario.password = password
+
+                usuario.save(function(err) {
+                    if(err) {
+                        console.log('Internal error: %s', err.message)
+                        return done(null, false, req.flash('signupMessage', 'Erro ao salvar o usuário: ' + err.message))
+                    }
+                    email.sendVerifyToUser(usuario, req.protocol, req.get('host'))
+                    return done(null, usuario)
+                })
+            }
+        })
+    })
+}))
+
+passport.use('local-login', new LocalStrategy({
+    passReqToCallback: true
+}, function(req, username, password, done) {
+    Usuario.findOne({'username': username}, function(err, user) {
+        if(err) return done(err)
+
+        if(!user) {
+            return done(null, false, req.flash('loginMessage', 'Usuário não encontrado'))
+        }
+
+        if(!user.checkPassword(password)) {
+            return done(null, false, req.flash('loginMessage', 'Senha incorreta'))
+        }
+
+        return done(null, user)
+    })
+}))

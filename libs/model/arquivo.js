@@ -33,12 +33,12 @@ var Arquivo = new Schema({
         type: String,
         required: true
     },
-    // Aprovado ou pendente
+    // aprovado ou pendente
     status: {
         type: String,
         default: 'pendente'
     },
-    // PDF ou image?
+    // PDF ou imagem?
     tipoArquivo: {
         type: String
     },
@@ -50,8 +50,13 @@ var Arquivo = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Professor'
     },
-    // Who uploaded
+    // Quem fez o upload
     usuario: {
+        type: Schema.Types.ObjectId,
+        ref: 'Usuario'
+    },
+    // Quem aprovou o upload
+    moderador: {
         type: Schema.Types.ObjectId,
         ref: 'Usuario'
     }

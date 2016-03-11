@@ -1,0 +1,44 @@
+[tooltip]{
+    position: relative;
+    z-index: 2;
+    cursor: pointer;
+    &:before, &:after{
+        visibility: hidden;
+        opacity: 0;
+    }
+
+    &:before{
+        position: absolute;
+        bottom: 120%;
+        left: 50%;
+        margin-bottom: 5px;
+        margin-left: -80px;
+        padding: 7px;
+        width: 160px;
+        border-radius: 3px;
+        background-color: $squid-ink;
+        color: $light-gray;
+        content: attr(tooltip);
+        text-align: center;
+        font-size: 14px;
+    }
+
+    &:after{
+        position: absolute;
+        bottom: 120%;
+        left: 50%;
+        margin-left: -5px;
+        width: 0;
+        border-top: 5px solid $squid-ink;
+        border-right: 5px solid transparent;
+        border-left: 5px solid transparent;
+        content: " ";
+        font-size: 0;
+        line-height: 0;
+    }
+
+    &:hover:before, &:hover:after{
+        visibility: visible;
+        opacity: 1;
+    }
+}

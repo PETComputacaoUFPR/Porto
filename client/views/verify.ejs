@@ -1,0 +1,17 @@
+<html>
+<% include partials/head %>
+<body>
+    <% include partials/basic-header %>
+    <section class="page-wrap">
+        <% if (message.length > 0) { %>
+            <div class="card margin"><%= message %></div>
+        <% } %>
+        <% if (ok) { %>
+            <div class="card margin">
+                Sua conta foi verificada! <a href="/">Voltar para a página inicial.</a>
+            </div>
+        <% } %>
+    </section>
+    <% include partials/footer %>
+</body>
+</html>

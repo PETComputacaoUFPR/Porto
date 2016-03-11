@@ -1,0 +1,39 @@
+<html>
+<% include partials/head %>
+<body>
+    <% if (message.length > 0) { message = JSON.parse(message); %>
+        <script>
+            swal('<%= message.title %>', '<%= message.message %>', '<%= message.type %>');
+        </script>
+    <% } %>
+    <div class="page-wrap">
+        <div class="clearfix padding-horizontal">
+            <div class="float-right">
+                <% if (!user) { %>
+                    <a href="/login">Entrar</a>
+                <% } %>
+                <% if (user) { %>
+                <a href="/conta">Sua conta</a>
+                    <% if (user.moderador) { %>
+                    <span>|</span>
+                    <a href="/admin">Admin</a>
+                    <% } %>
+                    <span>|</span>
+                    <a href="/logout">Sair</a>
+                <% } %>
+            </div>
+            <section class="index">
+                <h1>Farol</h1>
+                <form method="post" action="/search">
+                    <input type="search" placeholder="O que você procura?" name="query"
+                        class="search-bar two-thirds" autofocus required>
+                    <!-- Value do submit foi retirado daqui: http://fortawesome.github.io/Font-Awesome/cheatsheet/-->
+                    <input type="submit" class="icon-button dark" value="&#xf002;">
+                </form>
+            </section>
+            <p><a id="upload" class="upload-link" href="/upload">Faça o upload de uma prova ou trabalho!</a></p>
+        </div>
+    </div>
+    <% include partials/footer %>
+</body>
+</html>

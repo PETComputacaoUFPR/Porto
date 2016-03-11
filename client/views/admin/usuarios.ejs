@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+    <% include ../partials/head %>
+    <body>
+        <% include ../partials/admin-header %>
+        <section class="page-wrap">
+            <% if (message.length > 0) { %>
+                <% if (message == "successDelete") { %>
+                    <script>
+                        swal("Deletado!", "O usuário foi deletado com sucesso.", "success");
+                    </script>
+                <% } %>
+                <% if (message == "successSave") { %>
+                    <script>
+                        swal("Salvo!", "O usuário foi criado com sucesso.", "success");
+                    </script>
+                <% } %>
+                <% if (message == "errorSave") { %>
+                    <script>
+                        swal("Erro :(", "Não foi possível salvar o usuário. Tente novamente.", "error");
+                    </script>
+                <% } %>
+                <% if (message == "successEdit") { %>
+                    <script>
+                        swal("Salvo!", "O usuário foi editado com sucesso.", "success");
+                    </script>
+                <% } %>
+            <% } %>
+            <div class="card card-list margin">
+                <ul class="list">
+                    <h2 class="list-title">Usuários</h2>
+                    <input type="search" name="filter" class="search-bar margin-vertical two-thirds" placeholder="Busca" />
+                    <% for(var i=0; i < usuarios.length; i++) {%>
+                        <% if (usuarios[i].username != user.username) {%>
+                    <li class="list-item text-left">
+                        @<%= usuarios[i].username %> - <%= usuarios[i].nome %>
+                        <br>
+                        <%= usuarios[i].email %> <% if(usuarios[i].verificado) { %> - Verificado <% } %>
+                        <% if(usuarios[i].moderador && !usuarios[i].admin) { %> <br> Moderador <% } %>
+                        <% if(usuarios[i].admin) { %> <br> Administrador <% } %>
+                        <div class="float-right">
+                            <button onclick="location.href='/admin/usuarios/<%= usuarios[i]._id %>'" class="button normal hover-shadow">
+                                <i class="fa fa-edit fa-fw"></i>
+                            </button>
+
+                            <button onclick="deleteModal('<%= usuarios[i]._id %>')" class="button red hover-shadow">
+                                <i class="fa fa-close fa-fw"></i>
+                            </button>
+                        </div>
+                    </li>
+                        <% } %>
+                    <%} %>
+                    <% if (usuarios.length <= 1)  {  %>
+                    <li class="list-item">Não há usuários cadastrados.</li>
+                    <% } %>
+                </ul>
+            </div>
+        </section>
+        <% include ../partials/footer %>
+        <script>
+            function deleteModal(id) {
+                swal({
+                    title: "Você tem certeza?",
+                    text: "Não será possível recuperar o usuário!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Sim, deletar usuário!",
+                    closeOnConfirm: true,
+                    html: false
+                    }, function(){
+                        location.href = '/admin/usuarios/delete/' + id;
+                });
+            }
+        </script>
+    </body>
+</html>

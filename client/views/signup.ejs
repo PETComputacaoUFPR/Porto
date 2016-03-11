@@ -1,0 +1,30 @@
+<html>
+<% include partials/head %>
+<body>
+    <% include partials/basic-header %>
+    <% if (message.length > 0) { %>
+        <div class="card margin"><%= message %></div>
+    <% } %>
+    <section class="card clearfix margin">
+        <div>
+        <h2>Criar conta</h2>
+        <form method="post">
+            <input type="text" placeholder="Nome" name="nome" required>
+            <br>
+            <input type="text" placeholder="Username" name="username" required>
+            <br>
+            <input type="text" placeholder="E-mail" name="email" required>
+            <br>
+            <input type="password" placeholder="Senha" name="password" required>
+            <br/>
+            <button class="button normal" type="submit">Criar conta</button>
+            <br>
+        </form>
+        <p>
+            Já tem uma conta? <a href="/login">Entrar</a>
+        </p>
+    </div>
+    </section>
+    <% include partials/footer %>
+</body>
+</html>

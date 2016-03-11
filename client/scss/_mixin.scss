@@ -1,0 +1,25 @@
+@mixin filter($var) {
+    -webkit-filter: $var;
+    -moz-filter: $var;
+    -ms-filter: $var;
+    -o-filter: $var;
+    filter: $var;
+}
+
+@mixin transition($transition-property, $transition-time, $method) {
+    -webkit-transition: $transition-property $transition-time $method;
+    -moz-transition: $transition-property $transition-time $method;
+    -ms-transition: $transition-property $transition-time $method;
+    -o-transition: $transition-property $transition-time $method;
+    transition: $transition-property $transition-time $method;
+}
+
+%box-size{
+    box-sizing: border-box;
+}
+
+%clearfix:after, %clearfix:before{
+    display: block;
+    clear: both;
+    content: '';
+}
